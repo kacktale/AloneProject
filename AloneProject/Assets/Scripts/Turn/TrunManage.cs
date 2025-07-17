@@ -13,4 +13,9 @@ public class TrunManage : MonoBehaviour
         if(IsPlayerTurn) Player.SetActive(false);
         else Player.SetActive(true);
     }
+
+    public virtual void AttackEnemy(float Damage)
+    {
+
+    }
 }

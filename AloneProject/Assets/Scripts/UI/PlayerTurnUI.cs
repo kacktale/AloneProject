@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [System.Serializable]
 public class PlayerActEtc
 {
-    public int ActNum = 0;
+    public int ActNum = 0; // 0 : Fight | 1 : ACT | 2: ITEM | 3: MERCY | 4: DEFENCE
     public Image[] ACTImage;
 }
 
@@ -17,6 +17,12 @@ public class PlayerTurnUI : MonoBehaviour
     public PlayerActEtc[] PlayerAct;
     public int PlayerActType = 0;
 
+    private int EnemyLeft = 0;
+    private bool cantSelect = false;
+
+    public PlayerActUI PlayerActUI;
+    public PlayerfightUI playerfightUI;
+    public PlayerTargetUI playerTargetUI;
     private void Start()
     {
         AppearACTUI();
@@ -25,22 +31,54 @@ public class PlayerTurnUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) ChangeAct(-1);
-        if (Input.GetKeyDown(KeyCode.RightArrow)) ChangeAct(1);
+        if (TrunManage.IsPlayerTurn)
+        {
+            if (Input.GetKeyDown(KeyCode.LeftArrow) && !cantSelect) ChangeAct(-1);
+            if (Input.GetKeyDown(KeyCode.RightArrow) && !cantSelect) ChangeAct(1);
 
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            DisappearACTUI();
-            PlayerActType = (PlayerActType + 4) % 3;
-            AppearACTUI();
-        }
-        else if (Input.GetKeyDown(KeyCode.X))
-        {
-            DisappearACTUI();
-            if(PlayerActType != 0)
+            if (Input.GetKeyDown(KeyCode.Z))
             {
-                PlayerActType--;
+                if(PlayerAct[PlayerActType].ActNum == 1)
+                {
+                    PlayerActUI.CreateActUI();
+                    cantSelect = true;
+                    return;
+                }
+                else if (PlayerAct[PlayerActType].ActNum != 4 && !CheckTargetUI())
+                {
+                    playerTargetUI.ACTNum = 0;
+                    playerTargetUI.CreateTarget(true);
+                    cantSelect = true;
+                    return;
+                }
             }
+            else if (Input.GetKeyDown(KeyCode.X))
+            {
+                if (!CheckTargetUI())
+                {
+                    DisappearACTUI();
+                    if(PlayerActType > 0) PlayerActType = (PlayerActType + 2) % 3;
+                    AppearACTUI();
+                }
+                else
+                {
+                    cantSelect = false;
+                    playerTargetUI.CloseTargetUI();
+                }
+            }
+        }
+    }
+
+    public void GotoNextPerson()
+    {
+        cantSelect = false;
+        //playerTargetUI.CloseTargetUI();
+
+        DisappearACTUI();
+        if (PlayerActType >= 2) TrunManage.IsPlayerTurn = false;
+        else
+        {
+            PlayerActType = (PlayerActType + 4) % 3;
             AppearACTUI();
         }
     }
@@ -86,5 +124,10 @@ public class PlayerTurnUI : MonoBehaviour
     void DisappearACTUI()
     {
         PlayerUI[PlayerActType].anchoredPosition = new Vector2(0, 0);
+    }
+
+    bool CheckTargetUI()
+    {
+        return playerTargetUI.Pannel.activeSelf;
     }
 }
