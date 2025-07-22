@@ -18,7 +18,7 @@ public class PlayerTurnUI : MonoBehaviour
     public int PlayerActType = 0;
 
     private int EnemyLeft = 0;
-    private bool cantSelect = false;
+    public bool canSelect = true;
 
     public PlayerActUI PlayerActUI;
     public PlayerfightUI playerfightUI;
@@ -33,45 +33,18 @@ public class PlayerTurnUI : MonoBehaviour
     {
         if (TrunManage.IsPlayerTurn)
         {
-            if (Input.GetKeyDown(KeyCode.LeftArrow) && !cantSelect) ChangeAct(-1);
-            if (Input.GetKeyDown(KeyCode.RightArrow) && !cantSelect) ChangeAct(1);
+            if (Input.GetKeyDown(KeyCode.LeftArrow) && canSelect) ChangeAct(-1);
+            if (Input.GetKeyDown(KeyCode.RightArrow) && canSelect) ChangeAct(1);
 
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                if(PlayerAct[PlayerActType].ActNum == 1)
-                {
-                    PlayerActUI.CreateActUI();
-                    cantSelect = true;
-                    return;
-                }
-                else if (PlayerAct[PlayerActType].ActNum != 4 && !CheckTargetUI())
-                {
-                    playerTargetUI.ACTNum = 0;
-                    playerTargetUI.CreateTarget(true);
-                    cantSelect = true;
-                    return;
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.X))
-            {
-                if (!CheckTargetUI())
-                {
-                    DisappearACTUI();
-                    if(PlayerActType > 0) PlayerActType = (PlayerActType + 2) % 3;
-                    AppearACTUI();
-                }
-                else
-                {
-                    cantSelect = false;
-                    playerTargetUI.CloseTargetUI();
-                }
-            }
+
+            if (canSelect) CreateUI(); //ui 만들기
+            GotoBeforePlayer(); //ui 닫기
         }
     }
 
-    public void GotoNextPerson()
+    public void GotoNextPlayer()
     {
-        cantSelect = false;
+        canSelect = true;
         //playerTargetUI.CloseTargetUI();
 
         DisappearACTUI();
@@ -126,8 +99,36 @@ public class PlayerTurnUI : MonoBehaviour
         PlayerUI[PlayerActType].anchoredPosition = new Vector2(0, 0);
     }
 
-    bool CheckTargetUI()
+    void CreateUI()
     {
-        return playerTargetUI.Pannel.activeSelf;
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            if (PlayerAct[PlayerActType].ActNum == 1)
+            {
+                PlayerActUI.PlayerNum = PlayerActType;
+                PlayerActUI.CreateActUI();
+                PlayerActUI.IsMyturn = true;
+                canSelect = false;
+                return;
+            }
+            else if (PlayerAct[PlayerActType].ActNum != 4)
+            {
+                playerTargetUI.BeforeACTNum = 0;
+                playerTargetUI.IsMyturn = true;
+                playerTargetUI.CreateTarget(true);
+                canSelect = false;
+                return;
+            }
+        }
+    }
+
+    void GotoBeforePlayer()
+    {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            DisappearACTUI();
+            if (PlayerActType > 0) PlayerActType = (PlayerActType + 2) % 3;
+            AppearACTUI();
+        }
     }
 }

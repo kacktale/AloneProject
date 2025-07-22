@@ -9682,7 +9682,7 @@ GameObject:
   - component: {fileID: 136643988}
   - component: {fileID: 136643990}
   m_Layer: 0
-  m_Name: Square (3)
+  m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14615,7 +14615,7 @@ GameObject:
   - component: {fileID: 182076114}
   - component: {fileID: 182076115}
   m_Layer: 0
-  m_Name: Square (4)
+  m_Name: BackGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22965,7 +22965,7 @@ GameObject:
   - component: {fileID: 305262537}
   - component: {fileID: 305262536}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TpTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55310,29 +55310,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9ac8bde36e90024c952f9965515119c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ActClass:
-  - Name: spinning
-    Description: spin for an hour
-    P2Need: 0
-    P3Need: 0
-    NeedTp: 10
-  - Name: spin together
-    Description: spin for an second
-    P2Need: 1
-    P3Need: 1
-    NeedTp: 30
-  - Name: sleep
-    Description: spin for an second
-    P2Need: 1
-    P3Need: 0
-    NeedTp: 20
-  P2ActClass: []
-  P3ActClass: []
+  ActNum: 0
+  IsMyturn: 0
+  PlayerActName:
+  - ActClass:
+    - Name: spin
+      Description: spin for a second
+      P2Need: 0
+      P3Need: 0
+      NeedTp: 10
+    - Name: spin two of us
+      Description: spin for a minite
+      P2Need: 1
+      P3Need: 0
+      NeedTp: 20
+    - Name: spin together
+      Description: spin for a hour
+      P2Need: 1
+      P3Need: 1
+      NeedTp: 30
+  - ActClass:
+    - Name: Rude Buster
+      Description: Powerful Weapon
+      P2Need: 0
+      P3Need: 0
+      NeedTp: 50
+  - ActClass:
+    - Name: heal
+      Description: heal for us
+      P2Need: 0
+      P3Need: 0
+      NeedTp: 30
+    - Name: sleep
+      Description: sleep enemy
+      P2Need: 0
+      P3Need: 0
+      NeedTp: 30
   ActTxt: {fileID: 2482680793465110281, guid: c5f6d73eb876a2945971d1b5c282b9fb, type: 3}
   ParantObj: {fileID: 933572873}
   SkillDescription: {fileID: 342934728}
   NeedTpName: {fileID: 2004470639}
   PlayerActlist: []
+  ActTextlist: []
+  PlayerTurnUI: {fileID: 1372007298}
+  PlayerTargetUI: {fileID: 981617465}
+  PlayerNum: 0
 --- !u!1 &730245380
 GameObject:
   m_ObjectHideFlags: 0
@@ -57835,7 +57857,7 @@ GameObject:
   - component: {fileID: 770604204}
   - component: {fileID: 770604203}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60493,7 +60515,7 @@ GameObject:
   - component: {fileID: 812929034}
   - component: {fileID: 812929033}
   m_Layer: 5
-  m_Name: Attack
+  m_Name: AttackUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69079,7 +69101,7 @@ MonoBehaviour:
   m_StartAxis: 0
   m_CellSize: {x: 314.2, y: 76}
   m_Spacing: {x: 0, y: 0}
-  m_Constraint: 2
+  m_Constraint: 1
   m_ConstraintCount: 2
 --- !u!1 &934279506
 GameObject:
@@ -72231,16 +72253,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3818d9cc31aa3a94e80c80aeb450f5ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ActNum: 0
+  IsMyturn: 0
   Pannel: {fileID: 981617463}
   EnemyTarget:
   - {fileID: 11400000, guid: b92c066acea2eb547b010fa911807237, type: 2}
   PlayerTarget: {fileID: 11400000, guid: 4883854eb02076642bc429122c568fd0, type: 2}
   ParantUI: {fileID: 981617464}
   TargetObj: {fileID: 1684298449349229069, guid: 27004e1fa721e0b4683ea08c38747c26, type: 3}
-  PlayerActUI: {fileID: 0}
+  PlayerActUI: {fileID: 729982508}
   PlayerItemUI: {fileID: 0}
-  PlayerTurnUI: {fileID: 0}
-  ACTNum: 0
+  PlayerTurnUI: {fileID: 1372007298}
+  BeforeACTNum: 0
 --- !u!114 &981617466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79877,7 +79901,7 @@ GameObject:
   - component: {fileID: 1081064787}
   - component: {fileID: 1081064789}
   m_Layer: 0
-  m_Name: Square
+  m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90442,7 +90466,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1215576145}
   m_Layer: 0
-  m_Name: ---------------------
+  m_Name: -----------PlayerTurn----------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93130,7 +93154,7 @@ GameObject:
   - component: {fileID: 1251461526}
   - component: {fileID: 1251461528}
   m_Layer: 0
-  m_Name: Square (2)
+  m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95639,7 +95663,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1286374900}
   m_Layer: 0
-  m_Name: Character
+  m_Name: CharacterModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101243,7 +101267,7 @@ GameObject:
   - component: {fileID: 1372007297}
   - component: {fileID: 1372007298}
   m_Layer: 5
-  m_Name: Charactor
+  m_Name: CharactorTurnManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101334,6 +101358,7 @@ MonoBehaviour:
     - {fileID: 512192039}
     - {fileID: 159546182}
   PlayerActType: 0
+  canSelect: 1
   PlayerActUI: {fileID: 729982508}
   playerfightUI: {fileID: 0}
   playerTargetUI: {fileID: 981617465}
@@ -116393,7 +116418,7 @@ GameObject:
   - component: {fileID: 1552091585}
   - component: {fileID: 1552091587}
   m_Layer: 0
-  m_Name: Square (1)
+  m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131654,7 +131679,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1769832521}
   m_Layer: 5
-  m_Name: Item
+  m_Name: ItemUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143710,7 +143735,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1962481303}
   m_Layer: 0
-  m_Name: ---------------------
+  m_Name: -----------EnemyTurn----------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157177,6 +157202,8 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
+  - {fileID: 1390067996}
+  - {fileID: 1237892982}
   - {fileID: 1962481303}
   - {fileID: 1242312714}
   - {fileID: 220824594}
@@ -157184,6 +157211,4 @@ SceneRoots:
   - {fileID: 1215576145}
   - {fileID: 411187632}
   - {fileID: 1286374900}
-  - {fileID: 1390067996}
   - {fileID: 788511830}
-  - {fileID: 1237892982}
