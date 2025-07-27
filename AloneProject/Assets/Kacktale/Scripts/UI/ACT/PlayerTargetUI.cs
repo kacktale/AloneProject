@@ -28,6 +28,11 @@ public class PlayerTargetUI : ActControll
     private List<TextMeshProUGUI> TargetText = new List<TextMeshProUGUI>();
 
     public List<GameObject> ShowList => TargetList;
+    public override void ChooseAct(List<TextMeshProUGUI> textList)
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow)) ChangeAct(-1, textList);
+        if (Input.GetKeyDown(KeyCode.DownArrow)) ChangeAct(1, textList);
+    }
 
     public void Update()
     {
@@ -38,6 +43,7 @@ public class PlayerTargetUI : ActControll
             GotoBeforeAct();
         }
     }
+
 
     public void CreateTarget(bool isTargetEnemy)
     {
@@ -61,23 +67,27 @@ public class PlayerTargetUI : ActControll
             TargetHP.value = EnemyTarget[i].Hp;
             TargetList.Add(target);
         }
+        TargetText[0].color = Color.yellow;
     }
 
     void CreatePlayerTarget()
     {
-        int CountPlayer = PlayerTarget.PlayerTypes.Count() -1;
-        for (int i = 0; i < CountPlayer; i++)
+        int CountPlayer = PlayerTarget.PlayerTypes.Count();
+        for (int i = 1; i < CountPlayer; i++)
         {
             var target = Instantiate(TargetObj, transform.position, Quaternion.identity, ParantUI);
             TextMeshProUGUI text = target.GetComponent<TextMeshProUGUI>();
-            TargetText.Add(text);
             TargetHP = target.GetComponentInChildren<Slider>();
+            TargetText.Add(text);
 
-            TargetText[i].text = PlayerTarget.PlayerTypes[i].Name;
+            TargetText[i - 1].text = PlayerTarget.PlayerTypes[i].Name;
+
             TargetHP.maxValue = PlayerTarget.PlayerTypes[i].MaxHp;
             TargetHP.value = PlayerTarget.PlayerTypes[i].Hp;
-            TargetList.Add(target) ;
+
+            TargetList.Add(target);
         }
+        TargetText[0].color = Color.yellow;
     }
 
     void SelectTarget()
@@ -103,10 +113,11 @@ public class PlayerTargetUI : ActControll
                     PlayerActUI.IsMyturn = true;
                     break;
                 case 2:
-                    //PlayerItemUI
+                    PlayerItemUI.CreateItemList();
+                    PlayerItemUI.IsMyturn = true;
                     break;
                 default:
-                    PlayerTurnUI.canSelect = true;
+                    PlayerTurnUI.SetActSelect();
                     break;
             }
         }
@@ -114,12 +125,9 @@ public class PlayerTargetUI : ActControll
 
     public void CloseTargetUI()
     {
-        for (int i = 0; i < TargetList.Count; i++)
-        {
-            Destroy(TargetList[i].gameObject);
-            TargetList.Remove(TargetList[i]);
-            TargetText.Remove(TargetText[i]);
-        }
+        for (int i = 0; i < TargetList.Count; i++) Destroy(TargetList[i].gameObject);
+        TargetList.Clear();
+        TargetText.Clear();
         Pannel.SetActive(false);
     }
 

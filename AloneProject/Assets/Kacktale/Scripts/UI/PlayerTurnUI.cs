@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,7 +24,10 @@ public class PlayerTurnUI : MonoBehaviour
     public PlayerActUI PlayerActUI;
     public PlayerfightUI playerfightUI;
     public PlayerTargetUI playerTargetUI;
-    private void Start()
+    public PlayerItemUI playerItemUI;
+
+    public TextMeshProUGUI DescriptionText;
+    void Start()
     {
         AppearACTUI();
     }
@@ -31,30 +35,16 @@ public class PlayerTurnUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (TrunManage.IsPlayerTurn)
+        if (TrunManage.IsPlayerTurn && canSelect)
         {
-            if (Input.GetKeyDown(KeyCode.LeftArrow) && canSelect) ChangeAct(-1);
-            if (Input.GetKeyDown(KeyCode.RightArrow) && canSelect) ChangeAct(1);
+            if (Input.GetKeyDown(KeyCode.LeftArrow)) ChangeAct(-1);
+            if (Input.GetKeyDown(KeyCode.RightArrow)) ChangeAct(1);
 
-
-            if (canSelect) CreateUI(); //ui 만들기
+            CreateUI(); //ui 만들기
             GotoBeforePlayer(); //ui 닫기
         }
     }
 
-    public void GotoNextPlayer()
-    {
-        canSelect = true;
-        //playerTargetUI.CloseTargetUI();
-
-        DisappearACTUI();
-        if (PlayerActType >= 2) TrunManage.IsPlayerTurn = false;
-        else
-        {
-            PlayerActType = (PlayerActType + 4) % 3;
-            AppearACTUI();
-        }
-    }
 
     void ChangeAct(int value)
     {
@@ -103,12 +93,19 @@ public class PlayerTurnUI : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
+            DescriptionText.gameObject.SetActive(false);
+            canSelect = false;
             if (PlayerAct[PlayerActType].ActNum == 1)
             {
                 PlayerActUI.PlayerNum = PlayerActType;
                 PlayerActUI.CreateActUI();
                 PlayerActUI.IsMyturn = true;
-                canSelect = false;
+                return;
+            }
+            else if (PlayerAct[PlayerActType].ActNum == 2)
+            {
+                playerItemUI.CreateItemList();
+                playerItemUI.IsMyturn = true;
                 return;
             }
             else if (PlayerAct[PlayerActType].ActNum != 4)
@@ -116,13 +113,26 @@ public class PlayerTurnUI : MonoBehaviour
                 playerTargetUI.BeforeACTNum = 0;
                 playerTargetUI.IsMyturn = true;
                 playerTargetUI.CreateTarget(true);
-                canSelect = false;
                 return;
             }
+            GotoNextPlayer();
         }
     }
 
-    void GotoBeforePlayer()
+    public void GotoNextPlayer()
+    {
+        canSelect = true;
+        //playerTargetUI.CloseTargetUI();
+
+        DisappearACTUI();
+        if (PlayerActType >= 2) TrunManage.IsPlayerTurn = false;
+        else
+        {
+            PlayerActType = (PlayerActType + 4) % 3;
+            AppearACTUI();
+        }
+    }
+    public void GotoBeforePlayer()
     {
         if (Input.GetKeyDown(KeyCode.X))
         {
@@ -130,5 +140,11 @@ public class PlayerTurnUI : MonoBehaviour
             if (PlayerActType > 0) PlayerActType = (PlayerActType + 2) % 3;
             AppearACTUI();
         }
+    }
+
+    public void SetActSelect()
+    {
+        canSelect = true;
+        DescriptionText.gameObject.SetActive(true);
     }
 }

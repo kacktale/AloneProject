@@ -8,7 +8,7 @@ public class ActControll : MonoBehaviour
     public int ActNum;
     public bool IsMyturn;
 
-    public void ChooseAct(List<TextMeshProUGUI> textList)
+    public virtual void ChooseAct(List<TextMeshProUGUI> textList)
     {
         if (Input.GetKeyDown(KeyCode.UpArrow)) ChangeAct(-2, textList);
         if (Input.GetKeyDown(KeyCode.DownArrow)) ChangeAct(2, textList);

@@ -15,6 +15,8 @@ public class ActClass
     public bool P3Need;
 
     public int NeedTp;
+
+    public bool isTargetEnemy = true;
 }
 [System.Serializable]
 public class PlayerActList
@@ -25,10 +27,11 @@ public class PlayerActList
 public class PlayerActUI : ActControll
 {
     [Header("고유 스킬들")]
+    public int PlayerNum;
     public PlayerActList[] PlayerActName;
     [Header("텍스트 및 오브젝트들")]
     public GameObject ActTxt;
-    public Transform ParantObj;
+    public Transform TextArea;
     private TextMeshProUGUI SkillName;
     public TextMeshProUGUI SkillDescription;
     public TextMeshProUGUI NeedTpName;
@@ -40,13 +43,13 @@ public class PlayerActUI : ActControll
     public PlayerTurnUI PlayerTurnUI;
     public PlayerTargetUI PlayerTargetUI;
 
-    public int PlayerNum;
 
     public void CreateActUI()
     {
+        this.gameObject.SetActive(true);
         for (int i = 0; i < PlayerActName[PlayerNum].ActClass.Length; i++)
         {
-            var act = Instantiate(ActTxt, transform.position, Quaternion.identity, ParantObj);
+            var act = Instantiate(ActTxt, transform.position, Quaternion.identity, TextArea);
             act.name = PlayerActName[PlayerNum].ActClass[i].Name + "Skill";
             PlayerActlist.Add(act);
 
@@ -86,7 +89,7 @@ public class PlayerActUI : ActControll
             if (Input.GetKeyDown(KeyCode.X))
             {
                 ExitChooseAct();
-                PlayerTurnUI.canSelect = true;
+                PlayerTurnUI.SetActSelect();
             }
         }
     }
@@ -103,7 +106,7 @@ public class PlayerActUI : ActControll
         {
             ExitChooseAct();
             PlayerTargetUI.BeforeACTNum = 1;
-            PlayerTargetUI.CreateTarget(true);
+            PlayerTargetUI.CreateTarget(PlayerActName[PlayerNum].ActClass[ActNum].isTargetEnemy);
             PlayerTargetUI.IsMyturn = true;
         }
     }
@@ -122,5 +125,6 @@ public class PlayerActUI : ActControll
 
         SkillDescription.text = "";
         NeedTpName.text = "";
+        this.gameObject.SetActive(false);
     }
 }
