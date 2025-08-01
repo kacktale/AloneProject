@@ -8,11 +8,16 @@ using UnityEngine.UI;
 public class PlayerActEtc
 {
     public int ActNum = 0; // 0 : Fight | 1 : ACT | 2: ITEM | 3: MERCY | 4: DEFENCE
+    public int ActDetail = 0;
+    public string ItemName = "";
+    public int HealTarget;
+    public int HealAmount;
     public Image[] ACTImage;
 }
 
 public class PlayerTurnUI : MonoBehaviour
 {
+    #region 변수들
     public TrunManage TrunManage;
     public RectTransform[] PlayerUI;
     public PlayerActEtc[] PlayerAct;
@@ -27,6 +32,8 @@ public class PlayerTurnUI : MonoBehaviour
     public PlayerItemUI playerItemUI;
 
     public TextMeshProUGUI DescriptionText;
+    #endregion
+    private int DetailTurn = 0;
     void Start()
     {
         AppearACTUI();
@@ -80,6 +87,7 @@ public class PlayerTurnUI : MonoBehaviour
         }
     }
 
+    #region 연출
     void AppearACTUI()
     {
         PlayerUI[PlayerActType].anchoredPosition = new Vector2(0, 30);
@@ -88,6 +96,7 @@ public class PlayerTurnUI : MonoBehaviour
     {
         PlayerUI[PlayerActType].anchoredPosition = new Vector2(0, 0);
     }
+    #endregion
 
     void CreateUI()
     {
@@ -104,6 +113,8 @@ public class PlayerTurnUI : MonoBehaviour
             }
             else if (PlayerAct[PlayerActType].ActNum == 2)
             {
+                if (playerItemUI.FirstItemAct) playerItemUI.FirstItemPlayer = PlayerActType;
+                playerItemUI.PlayerNum = PlayerActType;
                 playerItemUI.CreateItemList();
                 playerItemUI.IsMyturn = true;
                 return;
@@ -119,13 +130,15 @@ public class PlayerTurnUI : MonoBehaviour
         }
     }
 
+    #region 시스템
     public void GotoNextPlayer()
     {
         canSelect = true;
         //playerTargetUI.CloseTargetUI();
+        playerItemUI.PlayerTurn++;
 
         DisappearACTUI();
-        if (PlayerActType >= 2) TrunManage.IsPlayerTurn = false;
+        if (PlayerActType >= 2) ShowResault();
         else
         {
             PlayerActType = (PlayerActType + 4) % 3;
@@ -136,6 +149,11 @@ public class PlayerTurnUI : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.X))
         {
+            if (PlayerActType - 1 == playerItemUI.FirstItemPlayer) playerItemUI.FirstItemAct = true;
+            if (playerItemUI.PlayerTurn > 0) playerItemUI.PlayerTurn--;
+
+            playerItemUI.ShowItem();
+
             DisappearACTUI();
             if (PlayerActType > 0) PlayerActType = (PlayerActType + 2) % 3;
             AppearACTUI();
@@ -147,4 +165,83 @@ public class PlayerTurnUI : MonoBehaviour
         canSelect = true;
         DescriptionText.gameObject.SetActive(true);
     }
+    #endregion
+
+    #region 플레이어 선택결과
+
+    void ShowResault()
+    {
+        TrunManage.IsPlayerTurn = false;
+        PrintDetailText();
+    }
+
+    void PrintDetailText()
+    {
+        switch (DetailTurn)
+        {
+            case 0:
+                switch (PlayerAct[0].ActNum)
+                {
+                    case 1:
+                        switch (PlayerAct[0].ActDetail)
+                        {
+                            case 0: DescriptionText.text = SkillText.spinOne; break;
+                            case 1: DescriptionText.text = SkillText.spinTwo; break;
+                            case 2: DescriptionText.text = SkillText.spinAll; break;
+                        }
+                        break;
+                    case 2:
+                        DescriptionText.text = HealText.Player1 + $"{PlayerAct[0].ItemName}!";
+                        break;
+                    case 3:
+                        DescriptionText.text = SpareText.Player1 + $"{playerTargetUI.EnemyTarget[PlayerAct[0].ActDetail]}!";
+                        if (playerTargetUI.EnemyTarget[PlayerAct[0].ActDetail].Tired < 100) DescriptionText.text += SpareText.failedSpare;
+                        break;
+                }
+                break;
+            case 1:
+                switch (PlayerAct[1].ActNum)
+                {
+                    case 1:
+                        switch (PlayerAct[1].ActDetail)
+                        {
+                            case 0:
+                                DescriptionText.text = SkillText.rudeBuster + $"{PlayerActUI.PlayerActName[1].ActClass[0].Name}!";
+                                break;
+                        }
+                        break;
+                    case 2:
+                        DescriptionText.text = HealText.Player2 + $"{PlayerAct[1].ItemName}!";
+                        break;
+                    case 3:
+                        DescriptionText.text = SpareText.Player2 + $"{playerTargetUI.EnemyTarget[PlayerAct[1].ActDetail]}!";
+                        if (playerTargetUI.EnemyTarget[PlayerAct[1].ActDetail].Tired < 100) DescriptionText.text += SpareText.failedSpare;
+                        break;
+                }
+                break;
+            case 2:
+                switch (PlayerAct[2].ActNum)
+                {
+                    case 1:
+                        switch (PlayerAct[1].ActDetail)
+                        {
+                            case 0:
+                                DescriptionText.text = SkillText.rudeBuster + $"{PlayerActUI.PlayerActName[1].ActClass[0].Name}!";
+                                break;
+                        }
+                        break;
+                    case 2:
+                        DescriptionText.text = HealText.Player2 + $"{PlayerAct[1].ItemName}!";
+                        break;
+                    case 3:
+                        DescriptionText.text = SpareText.Player2 + $"{playerTargetUI.EnemyTarget[PlayerAct[1].ActDetail]}!";
+                        if (playerTargetUI.EnemyTarget[PlayerAct[1].ActDetail].Tired < 100) DescriptionText.text += SpareText.failedSpare;
+                        break;
+                }
+                break;
+        }
+        DetailTurn++;
+    }
+
+    #endregion
 }

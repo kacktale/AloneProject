@@ -105,6 +105,7 @@ public class PlayerActUI : ActControll
         if (Input.GetKeyDown(KeyCode.Z))
         {
             ExitChooseAct();
+            PlayerTurnUI.PlayerAct[PlayerNum].ActDetail = ActNum;
             PlayerTargetUI.BeforeACTNum = 1;
             PlayerTargetUI.CreateTarget(PlayerActName[PlayerNum].ActClass[ActNum].isTargetEnemy);
             PlayerTargetUI.IsMyturn = true;

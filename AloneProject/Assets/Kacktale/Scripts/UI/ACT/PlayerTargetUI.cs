@@ -20,6 +20,7 @@ public class PlayerTargetUI : ActControll
     public PlayerItemUI PlayerItemUI;
     public PlayerTurnUI PlayerTurnUI;
 
+    public int PlayerType;
     public int BeforeACTNum; //전 행동 ui
 
     private Slider TargetHP;
@@ -94,6 +95,13 @@ public class PlayerTargetUI : ActControll
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
+            if (BeforeACTNum == 2)
+            {
+                PlayerTurnUI.PlayerAct[PlayerType].HealTarget = ActNum;
+                PlayerItemUI.FirstItemAct = false;
+                PlayerItemUI.UpdateItem();
+            }
+
             CloseTargetUI();
             PlayerTurnUI.GotoNextPlayer();
             PlayerTurnUI.canSelect = true;
@@ -113,6 +121,7 @@ public class PlayerTargetUI : ActControll
                     PlayerActUI.IsMyturn = true;
                     break;
                 case 2:
+                    PlayerItemUI.ShowItem();
                     PlayerItemUI.CreateItemList();
                     PlayerItemUI.IsMyturn = true;
                     break;

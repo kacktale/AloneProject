@@ -101209,6 +101209,7 @@ MonoBehaviour:
   - {fileID: 1029052878}
   PlayerAct:
   - ActNum: 0
+    ActDetail: 0
     ACTImage:
     - {fileID: 990719809}
     - {fileID: 1295318949}
@@ -101216,6 +101217,7 @@ MonoBehaviour:
     - {fileID: 818611826}
     - {fileID: 92173870}
   - ActNum: 0
+    ActDetail: 0
     ACTImage:
     - {fileID: 1955632508}
     - {fileID: 373581957}
@@ -101223,6 +101225,7 @@ MonoBehaviour:
     - {fileID: 780269926}
     - {fileID: 788109802}
   - ActNum: 0
+    ActDetail: 0
     ACTImage:
     - {fileID: 768927781}
     - {fileID: 932638160}
@@ -131620,12 +131623,17 @@ MonoBehaviour:
     description: it's Ramen!
     canRecive: 0
     healAmount: 90
+  FirstItemPlayer: 0
+  FirstItemAct: 1
+  PlayerNum: 0
+  PlayerTurn: 1
   itemPrefab: {fileID: 2490336426879477270, guid: d5b63eaffd1192a4c8fd394603583df9, type: 3}
   textArea: {fileID: 1905540805}
   itemDescription: {fileID: 1514053438}
   playerTurnUI: {fileID: 1372007298}
   playerTargetUI: {fileID: 981617465}
   textColorManager: []
+  tempTexts: []
 --- !u!1 &1771281590
 GameObject:
   m_ObjectHideFlags: 0

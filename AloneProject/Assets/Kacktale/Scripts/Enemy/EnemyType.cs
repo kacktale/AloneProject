@@ -13,4 +13,6 @@ public class EnemyType : ScriptableObject
     public int Def;
 
     public int ATK;
+
+    public int Tired;
 }
