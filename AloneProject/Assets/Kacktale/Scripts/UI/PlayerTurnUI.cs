@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,6 +27,7 @@ public class PlayerTurnUI : MonoBehaviour
 
     private int EnemyLeft = 0;
     public bool canSelect = true;
+    private bool resultTurn = false;
 
     public PlayerActUI PlayerActUI;
     public PlayerfightUI playerfightUI;
@@ -33,7 +36,7 @@ public class PlayerTurnUI : MonoBehaviour
 
     public TextMeshProUGUI DescriptionText;
     #endregion
-    private int DetailTurn = 0;
+    [SerializeField]private int DetailTurn = 0;
     void Start()
     {
         AppearACTUI();
@@ -42,7 +45,7 @@ public class PlayerTurnUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (TrunManage.IsPlayerTurn && canSelect)
+        if (TrunManage.IsPlayerTurn && canSelect && !resultTurn)
         {
             if (Input.GetKeyDown(KeyCode.LeftArrow)) ChangeAct(-1);
             if (Input.GetKeyDown(KeyCode.RightArrow)) ChangeAct(1);
@@ -50,8 +53,37 @@ public class PlayerTurnUI : MonoBehaviour
             CreateUI(); //ui 만들기
             GotoBeforePlayer(); //ui 닫기
         }
+        if(TrunManage.IsPlayerTurn && resultTurn)
+        {
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                DetailTurn++;
+                if (DetailTurn <= 2) PrintDetailText();
+                else CheckFight();
+            }
+        }
     }
 
+    void CheckFight()
+    {
+        DescriptionText.gameObject.SetActive(false);
+        if (PlayerAct.Any(p => p.ActNum == 0))
+        {
+            canSelect = false;
+            resultTurn = false;
+
+            playerfightUI.gameObject.SetActive(true);
+            if (PlayerAct[0].ActNum == 0) playerfightUI.PlayerOneReady = true;
+            if (PlayerAct[1].ActNum == 0) playerfightUI.PlayerTwoReady = true;
+            if (PlayerAct[2].ActNum == 0) playerfightUI.PlayerThreeReady = true;
+            playerfightUI.MakeFightList();
+        }
+        else
+        {
+            resultTurn = false;
+            TrunManage.IsPlayerTurn = false;
+        }
+    }
 
     void ChangeAct(int value)
     {
@@ -98,6 +130,8 @@ public class PlayerTurnUI : MonoBehaviour
     }
     #endregion
 
+
+    #region 시스템
     void CreateUI()
     {
         if (Input.GetKeyDown(KeyCode.Z))
@@ -129,18 +163,21 @@ public class PlayerTurnUI : MonoBehaviour
             GotoNextPlayer();
         }
     }
-
-    #region 시스템
     public void GotoNextPlayer()
     {
-        canSelect = true;
         //playerTargetUI.CloseTargetUI();
         playerItemUI.PlayerTurn++;
 
         DisappearACTUI();
-        if (PlayerActType >= 2) ShowResault();
+        if (PlayerActType >= 2)
+        {
+            canSelect = false;
+            resultTurn = true; 
+            ShowResault();
+        }
         else
         {
+            canSelect = true;
             PlayerActType = (PlayerActType + 4) % 3;
             AppearACTUI();
         }
@@ -150,9 +187,11 @@ public class PlayerTurnUI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.X))
         {
             if (PlayerActType - 1 == playerItemUI.FirstItemPlayer) playerItemUI.FirstItemAct = true;
-            if (playerItemUI.PlayerTurn > 0) playerItemUI.PlayerTurn--;
-
-            playerItemUI.ShowItem();
+            if (playerItemUI.IsConnected)
+            {
+                if (playerItemUI.PlayerTurn > 0) playerItemUI.PlayerTurn--;
+                playerItemUI.ShowItem();
+            }
 
             DisappearACTUI();
             if (PlayerActType > 0) PlayerActType = (PlayerActType + 2) % 3;
@@ -171,7 +210,8 @@ public class PlayerTurnUI : MonoBehaviour
 
     void ShowResault()
     {
-        TrunManage.IsPlayerTurn = false;
+        //TrunManage.IsPlayerTurn = false;
+        DescriptionText.gameObject.SetActive(true);
         PrintDetailText();
     }
 
@@ -197,6 +237,10 @@ public class PlayerTurnUI : MonoBehaviour
                         DescriptionText.text = SpareText.Player1 + $"{playerTargetUI.EnemyTarget[PlayerAct[0].ActDetail]}!";
                         if (playerTargetUI.EnemyTarget[PlayerAct[0].ActDetail].Tired < 100) DescriptionText.text += SpareText.failedSpare;
                         break;
+                    default:
+                        DetailTurn++;
+                        PrintDetailText();
+                        break;
                 }
                 break;
             case 1:
@@ -217,30 +261,40 @@ public class PlayerTurnUI : MonoBehaviour
                         DescriptionText.text = SpareText.Player2 + $"{playerTargetUI.EnemyTarget[PlayerAct[1].ActDetail]}!";
                         if (playerTargetUI.EnemyTarget[PlayerAct[1].ActDetail].Tired < 100) DescriptionText.text += SpareText.failedSpare;
                         break;
+                    default:
+                        DetailTurn++;
+                        PrintDetailText();
+                        break;
                 }
                 break;
             case 2:
                 switch (PlayerAct[2].ActNum)
                 {
                     case 1:
-                        switch (PlayerAct[1].ActDetail)
+                        switch (PlayerAct[2].ActDetail)
                         {
                             case 0:
-                                DescriptionText.text = SkillText.rudeBuster + $"{PlayerActUI.PlayerActName[1].ActClass[0].Name}!";
+                                DescriptionText.text = SkillText.Heal + $"{PlayerActUI.PlayerActName[2].ActClass[0].Name}!";
+                                break;
+                            case 1:
+                                DescriptionText.text = SkillText.Sleep + $"{PlayerActUI.PlayerActName[2].ActClass[1].Name}!";
                                 break;
                         }
                         break;
                     case 2:
-                        DescriptionText.text = HealText.Player2 + $"{PlayerAct[1].ItemName}!";
+                        DescriptionText.text = HealText.Player3 + $"{PlayerAct[2].ItemName}!";
                         break;
                     case 3:
-                        DescriptionText.text = SpareText.Player2 + $"{playerTargetUI.EnemyTarget[PlayerAct[1].ActDetail]}!";
-                        if (playerTargetUI.EnemyTarget[PlayerAct[1].ActDetail].Tired < 100) DescriptionText.text += SpareText.failedSpare;
+                        DescriptionText.text = SpareText.Player3 + $"{playerTargetUI.EnemyTarget[PlayerAct[2].ActDetail]}!";
+                        if (playerTargetUI.EnemyTarget[PlayerAct[2].ActDetail].Tired < 100) DescriptionText.text += SpareText.failedSpare;
+                        break;
+                    default:
+                        DescriptionText.gameObject.SetActive(false);
+                        CheckFight();
                         break;
                 }
                 break;
         }
-        DetailTurn++;
     }
 
     #endregion

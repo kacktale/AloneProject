@@ -52232,7 +52232,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 12.3, y: 30}
+  m_SizeDelta: {x: 12.3, y: 34.5}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &691266588
 MonoBehaviour:
@@ -60386,6 +60386,7 @@ GameObject:
   - component: {fileID: 812929032}
   - component: {fileID: 812929034}
   - component: {fileID: 812929033}
+  - component: {fileID: 812929035}
   m_Layer: 5
   m_Name: AttackUI
   m_TagString: Untagged
@@ -60412,7 +60413,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 71.6, y: 0}
+  m_AnchoredPosition: {x: 25.74, y: 0}
   m_SizeDelta: {x: 660, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &812929033
@@ -60453,6 +60454,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 812929031}
   m_CullTransparentMesh: 1
+--- !u!114 &812929035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812929031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 175f385519443064f9106a43c248902e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerOneReady: 0
+  PlayerTwoReady: 0
+  PlayerThreeReady: 0
+  PlayerAttackUI:
+  - {fileID: 1995027646}
+  - {fileID: 912539351}
+  - {fileID: 1293847103}
+  PlayerRectTransform:
+  - {fileID: 1995027647}
+  - {fileID: 912539352}
+  - {fileID: 1293847104}
+  HitNote: {fileID: 8516900403671111520, guid: 1d5346c4d0a36f1458c15ac5b06c624b, type: 3}
+  Notes: []
+  trunManage: {fileID: 1390067995}
 --- !u!1 &814020124
 GameObject:
   m_ObjectHideFlags: 0
@@ -67603,7 +67630,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 30}
+  m_SizeDelta: {x: 100, y: 34.5}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &912539353
 MonoBehaviour:
@@ -67618,7 +67645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.61635214, g: 0.61635214, b: 0.61635214, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -72136,6 +72163,7 @@ MonoBehaviour:
   PlayerActUI: {fileID: 729982508}
   PlayerItemUI: {fileID: 1769832522}
   PlayerTurnUI: {fileID: 1372007298}
+  PlayerType: 0
   BeforeACTNum: 0
 --- !u!114 &981617466
 MonoBehaviour:
@@ -96254,7 +96282,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 30}
+  m_SizeDelta: {x: 100, y: 34.5}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1293847105
 MonoBehaviour:
@@ -96269,7 +96297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.61635214, g: 0.61635214, b: 0.61635214, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -98105,7 +98133,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 12.3, y: 30}
+  m_SizeDelta: {x: 12.3, y: 34.5}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1322999601
 MonoBehaviour:
@@ -101210,6 +101238,9 @@ MonoBehaviour:
   PlayerAct:
   - ActNum: 0
     ActDetail: 0
+    ItemName: 
+    HealTarget: 0
+    HealAmount: 0
     ACTImage:
     - {fileID: 990719809}
     - {fileID: 1295318949}
@@ -101218,6 +101249,9 @@ MonoBehaviour:
     - {fileID: 92173870}
   - ActNum: 0
     ActDetail: 0
+    ItemName: 
+    HealTarget: 0
+    HealAmount: 0
     ACTImage:
     - {fileID: 1955632508}
     - {fileID: 373581957}
@@ -101226,6 +101260,9 @@ MonoBehaviour:
     - {fileID: 788109802}
   - ActNum: 0
     ActDetail: 0
+    ItemName: 
+    HealTarget: 0
+    HealAmount: 0
     ACTImage:
     - {fileID: 768927781}
     - {fileID: 932638160}
@@ -101235,10 +101272,11 @@ MonoBehaviour:
   PlayerActType: 0
   canSelect: 1
   PlayerActUI: {fileID: 729982508}
-  playerfightUI: {fileID: 0}
+  playerfightUI: {fileID: 812929035}
   playerTargetUI: {fileID: 981617465}
   playerItemUI: {fileID: 1769832522}
   DescriptionText: {fileID: 770604203}
+  DetailTurn: 0
 --- !u!1 &1372225157
 GameObject:
   m_ObjectHideFlags: 0
@@ -131623,10 +131661,12 @@ MonoBehaviour:
     description: it's Ramen!
     canRecive: 0
     healAmount: 90
+  IsConnected: 0
   FirstItemPlayer: 0
+  PlayerTurn: 1
   FirstItemAct: 1
   PlayerNum: 0
-  PlayerTurn: 1
+  PlayerType: 0
   itemPrefab: {fileID: 2490336426879477270, guid: d5b63eaffd1192a4c8fd394603583df9, type: 3}
   textArea: {fileID: 1905540805}
   itemDescription: {fileID: 1514053438}
@@ -146405,7 +146445,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 30}
+  m_SizeDelta: {x: 100, y: 34.5}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1995027648
 MonoBehaviour:
@@ -146420,7 +146460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.61635214, g: 0.61635214, b: 0.61635214, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -152817,7 +152857,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 12.3, y: 30}
+  m_SizeDelta: {x: 12.3, y: 34.5}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &2075062872
 MonoBehaviour:

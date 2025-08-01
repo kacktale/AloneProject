@@ -104,7 +104,7 @@ public class PlayerTargetUI : ActControll
 
             CloseTargetUI();
             PlayerTurnUI.GotoNextPlayer();
-            PlayerTurnUI.canSelect = true;
+            //PlayerTurnUI.canSelect = true;
         }
     }
 
@@ -135,6 +135,7 @@ public class PlayerTargetUI : ActControll
     public void CloseTargetUI()
     {
         for (int i = 0; i < TargetList.Count; i++) Destroy(TargetList[i].gameObject);
+        IsMyturn = false;
         TargetList.Clear();
         TargetText.Clear();
         Pannel.SetActive(false);

@@ -23,7 +23,7 @@ public class PlayerItemUI : ActControll
 
     private List<ItemName> tempitemManager;
 
-    private bool IsConnected = false;
+    public bool IsConnected = false;
     public int FirstItemPlayer = 0;
     public int PlayerTurn = 0;
 
@@ -132,7 +132,7 @@ public class PlayerItemUI : ActControll
         Debug.Log("재생3");
         switch (PlayerTurn)
         {
-            case 1: tempitemManager = new List<ItemName>(OriginalitemManager);break;
+            case 1: tempitemManager = new List<ItemName>(OriginalitemManager); break;
             case 2: tempitemManager = new List<ItemName>(CurrentItemManager); break;
             case 3: tempitemManager = new List<ItemName>(P3ItemManager); break;
         }
