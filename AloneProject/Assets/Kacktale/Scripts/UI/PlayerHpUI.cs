@@ -14,6 +14,11 @@ public class PlayerHpUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        UpdateUI();
+    }
+
+    public void UpdateUI()
+    {
         for (int i = 0; i < PlayerName.Length; i++)
         {
             if (Type[i] <= 0) ErrorManager.ShowError(0);

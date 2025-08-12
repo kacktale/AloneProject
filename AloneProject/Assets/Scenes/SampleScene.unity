@@ -32446,7 +32446,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!223 &411187631
 Canvas:
   m_ObjectHideFlags: 0
@@ -32456,7 +32456,7 @@ Canvas:
   m_GameObject: {fileID: 411187628}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 2
   m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -32478,8 +32478,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 411187628}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 90}
+  m_LocalScale: {x: 0.01968504, y: 0.01968504, z: 0.01968504}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 345762447}
@@ -32490,8 +32490,8 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_SizeDelta: {x: 675, y: 508}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &415663543
 GameObject:
   m_ObjectHideFlags: 0
@@ -60469,17 +60469,15 @@ MonoBehaviour:
   PlayerOneReady: 0
   PlayerTwoReady: 0
   PlayerThreeReady: 0
+  NoteTurn: 0
   PlayerAttackUI:
   - {fileID: 1995027646}
   - {fileID: 912539351}
   - {fileID: 1293847103}
-  PlayerRectTransform:
-  - {fileID: 1995027647}
-  - {fileID: 912539352}
-  - {fileID: 1293847104}
   HitNote: {fileID: 8516900403671111520, guid: 1d5346c4d0a36f1458c15ac5b06c624b, type: 3}
   Notes: []
   trunManage: {fileID: 1390067995}
+  turnUI: {fileID: 1372007298}
 --- !u!1 &814020124
 GameObject:
   m_ObjectHideFlags: 0
@@ -67605,6 +67603,7 @@ GameObject:
   - component: {fileID: 912539352}
   - component: {fileID: 912539354}
   - component: {fileID: 912539353}
+  - component: {fileID: 912539355}
   m_Layer: 5
   m_Name: Image (1)
   m_TagString: Untagged
@@ -67670,6 +67669,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 912539351}
   m_CullTransparentMesh: 1
+--- !u!114 &912539355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912539351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d33292aac712447a3ece1439aebce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerType: 1
+  closeNote: 0
+  correctNote: 0
+  noteObj: {fileID: 0}
+  noteManager: {fileID: 0}
+  playerfightUI: {fileID: 812929035}
 --- !u!1 &913841856
 GameObject:
   m_ObjectHideFlags: 0
@@ -96257,6 +96274,7 @@ GameObject:
   - component: {fileID: 1293847104}
   - component: {fileID: 1293847106}
   - component: {fileID: 1293847105}
+  - component: {fileID: 1293847107}
   m_Layer: 5
   m_Name: Image (2)
   m_TagString: Untagged
@@ -96322,6 +96340,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1293847103}
   m_CullTransparentMesh: 1
+--- !u!114 &1293847107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293847103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d33292aac712447a3ece1439aebce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerType: 2
+  closeNote: 0
+  correctNote: 0
+  noteObj: {fileID: 0}
+  noteManager: {fileID: 0}
+  playerfightUI: {fileID: 812929035}
 --- !u!1 &1294145943
 GameObject:
   m_ObjectHideFlags: 0
@@ -101230,6 +101266,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49bf873b5d79d7c47b3c713e4d035102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: 4883854eb02076642bc429122c568fd0, type: 2}
+  enemyType:
+  - {fileID: 11400000, guid: b92c066acea2eb547b010fa911807237, type: 2}
   TrunManage: {fileID: 1390067995}
   PlayerUI:
   - {fileID: 1177918002}
@@ -101270,6 +101309,7 @@ MonoBehaviour:
     - {fileID: 512192039}
     - {fileID: 159546182}
   PlayerActType: 0
+  PlayerHpUI: {fileID: 0}
   canSelect: 1
   PlayerActUI: {fileID: 729982508}
   playerfightUI: {fileID: 812929035}
@@ -146420,6 +146460,7 @@ GameObject:
   - component: {fileID: 1995027647}
   - component: {fileID: 1995027649}
   - component: {fileID: 1995027648}
+  - component: {fileID: 1995027650}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -146485,6 +146526,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1995027646}
   m_CullTransparentMesh: 1
+--- !u!114 &1995027650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1995027646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d33292aac712447a3ece1439aebce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerType: 0
+  closeNote: 0
+  correctNote: 0
+  noteObj: {fileID: 0}
+  noteManager: {fileID: 0}
+  playerfightUI: {fileID: 812929035}
 --- !u!1 &1998966513
 GameObject:
   m_ObjectHideFlags: 0
@@ -157232,11 +157291,11 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 1390067996}
   - {fileID: 1237892982}
+  - {fileID: 1286374900}
+  - {fileID: 788511830}
   - {fileID: 1962481303}
   - {fileID: 1242312714}
   - {fileID: 220824594}
   - {fileID: 1547055338}
   - {fileID: 1215576145}
   - {fileID: 411187632}
-  - {fileID: 1286374900}
-  - {fileID: 788511830}

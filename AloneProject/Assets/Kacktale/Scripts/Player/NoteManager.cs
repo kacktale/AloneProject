@@ -7,7 +7,7 @@ public class NoteManager : MonoBehaviour
     public RectTransform TargetTransform;
     private RectTransform NoteTransform;
     public PlayerfightUI PlayerfightUI;
-    public int DamageValue;
+    public int NoteList;
     public float Speed;
 
     private void Awake()

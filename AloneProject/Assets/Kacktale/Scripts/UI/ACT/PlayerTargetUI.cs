@@ -56,7 +56,7 @@ public class PlayerTargetUI : ActControll
     void CreateEnemyTarget()
     {
         int CountEnemys = EnemyTarget.Count();
-        for(int i = 0; i < CountEnemys; i++)
+        for (int i = 0; i < CountEnemys; i++)
         {
             GameObject target = Instantiate(TargetObj, transform.position, Quaternion.identity, ParantUI);
             TextMeshProUGUI text = target.GetComponent<TextMeshProUGUI>();
@@ -100,6 +100,21 @@ public class PlayerTargetUI : ActControll
                 PlayerTurnUI.PlayerAct[PlayerType].HealTarget = ActNum;
                 PlayerItemUI.FirstItemAct = false;
                 PlayerItemUI.UpdateItem();
+            }
+            else if (BeforeACTNum == 1 && PlayerType == 0)
+            {
+                if (PlayerTurnUI.PlayerAct[PlayerType].ActDetail == 1)
+                {
+                    PlayerTurnUI.SkipP2 = true;
+                    PlayerTurnUI.PlayerAct[1].ActNum = 5;
+                }
+                else if (PlayerTurnUI.PlayerAct[PlayerType].ActDetail == 2)
+                {
+                    PlayerTurnUI.SkipP2 = true;
+                    PlayerTurnUI.PlayerAct[1].ActNum = 5;
+                    PlayerTurnUI.SkipP3 = true;
+                    PlayerTurnUI.PlayerAct[2].ActNum = 5;
+                }
             }
 
             CloseTargetUI();

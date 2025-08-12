@@ -109,6 +109,7 @@ public class PlayerActUI : ActControll
             PlayerTargetUI.BeforeACTNum = 1;
             PlayerTargetUI.CreateTarget(PlayerActName[PlayerNum].ActClass[ActNum].isTargetEnemy);
             PlayerTargetUI.IsMyturn = true;
+            PlayerTargetUI.PlayerType = PlayerNum;
         }
     }
     public void ExitChooseAct()

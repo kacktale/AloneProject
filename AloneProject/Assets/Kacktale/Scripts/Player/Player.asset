@@ -19,20 +19,20 @@ MonoBehaviour:
     Def: 0
     ATK: 0
   - Name: Kris
-    Hp: 160
-    MaxHp: 160
-    Def: 2
-    ATK: 2
+    Hp: 90
+    MaxHp: 90
+    Def: 0
+    ATK: 15
   - Name: Susie
-    Hp: 190
-    MaxHp: 190
-    Def: 1
-    ATK: 4
+    Hp: 110
+    MaxHp: 110
+    Def: 0
+    ATK: 20
   - Name: Ralshei
-    Hp: 140
-    MaxHp: 140
-    Def: 1
-    ATK: 2
+    Hp: 70
+    MaxHp: 70
+    Def: 0
+    ATK: 13
   PlayerActs:
   - ActNum: 0
   - ActNum: 0

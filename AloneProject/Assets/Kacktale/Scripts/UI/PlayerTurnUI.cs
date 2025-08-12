@@ -9,7 +9,7 @@ using UnityEngine.UI;
 [System.Serializable]
 public class PlayerActEtc
 {
-    public int ActNum = 0; // 0 : Fight | 1 : ACT | 2: ITEM | 3: MERCY | 4: DEFENCE
+    public int ActNum = 0; // 0 : Fight | 1 : ACT | 2: ITEM | 3: MERCY | 4: DEFENCE | 5: Skiped
     public int ActDetail = 0;
     public string ItemName = "";
     public int HealTarget;
@@ -20,10 +20,13 @@ public class PlayerActEtc
 public class PlayerTurnUI : MonoBehaviour
 {
     #region 변수들
+    public Players playerData;
+    public EnemyType[] enemyType;
     public TrunManage TrunManage;
     public RectTransform[] PlayerUI;
     public PlayerActEtc[] PlayerAct;
     public int PlayerActType = 0;
+    public PlayerHpUI PlayerHpUI;
 
     private int EnemyLeft = 0;
     public bool canSelect = true;
@@ -34,12 +37,16 @@ public class PlayerTurnUI : MonoBehaviour
     public PlayerTargetUI playerTargetUI;
     public PlayerItemUI playerItemUI;
 
+    public bool SkipP2 = false;
+    public bool SkipP3 = false;
+
     public TextMeshProUGUI DescriptionText;
     #endregion
     [SerializeField]private int DetailTurn = 0;
     void Start()
     {
         AppearACTUI();
+        PlayerHpUI = gameObject.GetComponent<PlayerHpUI>();
     }
 
     // Update is called once per frame
@@ -130,7 +137,6 @@ public class PlayerTurnUI : MonoBehaviour
     }
     #endregion
 
-
     #region 시스템
     void CreateUI()
     {
@@ -169,7 +175,8 @@ public class PlayerTurnUI : MonoBehaviour
         playerItemUI.PlayerTurn++;
 
         DisappearACTUI();
-        if (PlayerActType >= 2)
+
+        if (PlayerActType >= 2 || (SkipP2 && SkipP3) || (PlayerActType == 1 && SkipP3))
         {
             canSelect = false;
             resultTurn = true; 
@@ -179,6 +186,7 @@ public class PlayerTurnUI : MonoBehaviour
         {
             canSelect = true;
             PlayerActType = (PlayerActType + 4) % 3;
+            if (SkipP2) PlayerActType++;
             AppearACTUI();
         }
     }
@@ -195,6 +203,9 @@ public class PlayerTurnUI : MonoBehaviour
 
             DisappearACTUI();
             if (PlayerActType > 0) PlayerActType = (PlayerActType + 2) % 3;
+            if(SkipP2) PlayerActType--;
+            SkipP2 = false;
+            SkipP3 = false;
             AppearACTUI();
         }
     }
@@ -237,10 +248,12 @@ public class PlayerTurnUI : MonoBehaviour
                         DescriptionText.text = SpareText.Player1 + $"{playerTargetUI.EnemyTarget[PlayerAct[0].ActDetail]}!";
                         if (playerTargetUI.EnemyTarget[PlayerAct[0].ActDetail].Tired < 100) DescriptionText.text += SpareText.failedSpare;
                         break;
+                    case 5:
+                        break;
                     default:
                         DetailTurn++;
                         PrintDetailText();
-                        break;
+                        return;
                 }
                 break;
             case 1:
@@ -261,10 +274,12 @@ public class PlayerTurnUI : MonoBehaviour
                         DescriptionText.text = SpareText.Player2 + $"{playerTargetUI.EnemyTarget[PlayerAct[1].ActDetail]}!";
                         if (playerTargetUI.EnemyTarget[PlayerAct[1].ActDetail].Tired < 100) DescriptionText.text += SpareText.failedSpare;
                         break;
+                    case 5:
+                        break;
                     default:
                         DetailTurn++;
                         PrintDetailText();
-                        break;
+                        return;
                 }
                 break;
             case 2:
@@ -288,6 +303,102 @@ public class PlayerTurnUI : MonoBehaviour
                         DescriptionText.text = SpareText.Player3 + $"{playerTargetUI.EnemyTarget[PlayerAct[2].ActDetail]}!";
                         if (playerTargetUI.EnemyTarget[PlayerAct[2].ActDetail].Tired < 100) DescriptionText.text += SpareText.failedSpare;
                         break;
+                    case 5:
+                        break;
+                    default:
+                        DescriptionText.gameObject.SetActive(false);
+                        CheckFight();
+                        return;
+                }
+                break;
+        }
+        PlayAct();
+    }
+
+    void PlayAct()
+    {
+        switch (DetailTurn)
+        {
+            case 0:
+                switch (PlayerAct[0].ActNum)
+                {
+                    case 1:
+                        switch (PlayerAct[0].ActDetail)
+                        {
+                            case 0: Debug.Log("액트 1"); break;
+                            case 1: Debug.Log("액트 2"); break;
+                            case 2: Debug.Log("액트 3"); break;
+                        }
+                        break;
+                    case 2:
+                        playerData.PlayerTypes[PlayerAct[0].HealTarget + 1].Hp += PlayerAct[0].HealAmount;
+                        break;
+                    case 3:
+                        if (playerTargetUI.EnemyTarget[PlayerAct[0].ActDetail].Tired >= 100)
+                        {
+
+                        }
+                        break;
+                    default:
+                        PrintDetailText();
+                        break;
+                }
+                break;
+            case 1:
+                switch (PlayerAct[1].ActNum)
+                {
+                    case 1:
+                        switch (PlayerAct[1].ActDetail)
+                        {
+                            case 0:
+                                DescriptionText.text = SkillText.rudeBuster + $"{PlayerActUI.PlayerActName[1].ActClass[0].Name}!";
+                                break;
+                        }
+                        break;
+                    case 2:
+                        playerData.PlayerTypes[PlayerAct[1].HealTarget + 1].Hp += PlayerAct[1].HealAmount;
+                        break;
+                    case 3:
+                        if (playerTargetUI.EnemyTarget[PlayerAct[1].ActDetail].Tired >= 100)
+                        {
+
+                        }
+                        break;
+                    case 5:
+                        break;
+                    default:
+                        PrintDetailText();
+                        break;
+                }
+                break;
+            case 2:
+                switch (PlayerAct[2].ActNum)
+                {
+                    case 1:
+                        switch (PlayerAct[2].ActDetail)
+                        {
+                            case 0:
+                                DescriptionText.text = SkillText.Heal + $"{PlayerActUI.PlayerActName[2].ActClass[0].Name}!";
+                                break;
+                            case 1:
+                                DescriptionText.text = SkillText.Sleep + $"{PlayerActUI.PlayerActName[2].ActClass[1].Name}!";
+                                break;
+                        }
+                        break;
+                    case 2:
+                        Debug.Log("Turn : " + DetailTurn);
+                        Debug.Log("Before : " + playerData.PlayerTypes[PlayerAct[2].HealTarget + 1].Hp);
+                        playerData.PlayerTypes[PlayerAct[2].HealTarget +1].Hp += PlayerAct[2].HealAmount;
+                        Debug.Log("After : " + playerData.PlayerTypes[PlayerAct[2].HealTarget + 1].Hp);
+                        break;
+                    case 3:
+                        if (playerTargetUI.EnemyTarget[PlayerAct[2].ActDetail].Tired >= 100)
+                        {
+                            
+                        }
+                        break;
+                    case 5:
+                        break;
                     default:
                         DescriptionText.gameObject.SetActive(false);
                         CheckFight();
@@ -295,7 +406,13 @@ public class PlayerTurnUI : MonoBehaviour
                 }
                 break;
         }
+        PlayerHpUI.UpdateUI();
     }
 
     #endregion
+
+    public void AttackEnemy(int type)
+    {
+        enemyType[PlayerAct[type].ActDetail].Hp -= playerData.PlayerTypes[type].ATK - enemyType[PlayerAct[type].ActDetail].Def;
+    }
 }

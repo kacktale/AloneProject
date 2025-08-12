@@ -7,12 +7,12 @@ public class PlayerType
 {
     public string Name;
 
-    public float Hp;
-    public float MaxHp;
+    public int Hp;
+    public int MaxHp;
 
-    public float Def;
+    public int Def;
 
-    public float ATK;
+    public int ATK;
 }
 [System.Serializable]
 public class PlayerAct
