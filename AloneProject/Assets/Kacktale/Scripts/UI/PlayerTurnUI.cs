@@ -28,7 +28,6 @@ public class PlayerTurnUI : MonoBehaviour
     public int PlayerActType = 0;
     public PlayerHpUI PlayerHpUI;
 
-    private int EnemyLeft = 0;
     public bool canSelect = true;
     private bool resultTurn = false;
 
@@ -88,7 +87,7 @@ public class PlayerTurnUI : MonoBehaviour
         else
         {
             resultTurn = false;
-            TrunManage.IsPlayerTurn = false;
+            TrunManage.StartEnemyTurn();
         }
     }
 
@@ -410,6 +409,24 @@ public class PlayerTurnUI : MonoBehaviour
     }
 
     #endregion
+
+    public void StartAct()
+    {
+        PlayerActType = 0;
+        AppearACTUI();
+        canSelect = true;
+        foreach (var act in PlayerAct)
+        {
+            act.ActNum = 0;
+            act.ActDetail = 0;
+            act.ItemName = null;
+            act.HealTarget = 0;
+            act.HealAmount = 0;
+            for (int i = 0; i < act.ACTImage.Length; i++) act.ACTImage[i].color = Color.white;
+            act.ACTImage[act.ActNum].color = Color.yellow;
+        }
+        playerfightUI.ResetAttackData();
+    }
 
     public void AttackEnemy(int type)
     {

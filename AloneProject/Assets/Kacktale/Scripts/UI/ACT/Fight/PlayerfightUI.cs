@@ -13,11 +13,12 @@ public class PlayerfightUI : MonoBehaviour
 
     public GameObject[] PlayerAttackUI;
     private RectTransform[] PlayerRectTransform;
-    private NoteScan[] noteScans;
+    public NoteScan[] noteScans;
     public GameObject HitNote;
     public List<NoteManager> Notes;
     public TrunManage trunManage;
     private bool MadeFightNote;
+    private bool CheckNote;
     public PlayerTurnUI turnUI;
 
     private void Awake()
@@ -28,6 +29,16 @@ public class PlayerfightUI : MonoBehaviour
         {
             PlayerRectTransform[i] = PlayerAttackUI[i].GetComponent<RectTransform>();
             noteScans[i] = PlayerAttackUI[i].GetComponent<NoteScan>();
+        }
+    }
+
+    public void ResetAttackData()
+    {
+        NoteTurn = 0;
+        MadeFightNote = false;
+        for(int i = 0; i < noteScans.Length; i++)
+        {
+            noteScans[i].ResetDetect();
         }
     }
 
@@ -92,16 +103,20 @@ public class PlayerfightUI : MonoBehaviour
 
     public void RemoveDupeNote(int playerType)
     {
+        if(CheckNote) return;
+        CheckNote = true;
         for (int i = Notes.Count - 1; i >= 0; i--)
         {
             if (Notes[i].NoteList == NoteTurn)
             {
+                Debug.Log("데미지 들어감");
                 Destroy(Notes[i].gameObject);
                 Notes.RemoveAt(i);
                 FightEnemy(playerType);
             }
         }
         NoteTurn++;
+        CheckNote = false;
         if (Notes.Count <= 0) Invoke("EndTurn", 1);
     }
 
@@ -112,7 +127,7 @@ public class PlayerfightUI : MonoBehaviour
 
     public void EndTurn()
     {
-        trunManage.IsPlayerTurn = false;
+        trunManage.StartEnemyTurn();
         gameObject.SetActive(false);
     }
 }

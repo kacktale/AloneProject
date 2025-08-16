@@ -35,4 +35,10 @@ public class NoteScan : MonoBehaviour
     {
         playerfightUI.RemoveDupeNote(PlayerType);
     }
+
+    public void ResetDetect()
+    {
+        closeNote = false;
+        correctNote = false;
+    }
 }
