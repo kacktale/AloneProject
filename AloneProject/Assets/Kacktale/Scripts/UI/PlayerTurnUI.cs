@@ -41,7 +41,8 @@ public class PlayerTurnUI : MonoBehaviour
 
     public TextMeshProUGUI DescriptionText;
     #endregion
-    [SerializeField]private int DetailTurn = 0;
+    [SerializeField] private int DetailTurn = 0;
+    public DamageText[] DamageText;
     void Start()
     {
         AppearACTUI();
@@ -59,7 +60,7 @@ public class PlayerTurnUI : MonoBehaviour
             CreateUI(); //ui 만들기
             GotoBeforePlayer(); //ui 닫기
         }
-        if(TrunManage.IsPlayerTurn && resultTurn)
+        if (TrunManage.IsPlayerTurn && resultTurn)
         {
             if (Input.GetKeyDown(KeyCode.Z))
             {
@@ -178,7 +179,7 @@ public class PlayerTurnUI : MonoBehaviour
         if (PlayerActType >= 2 || (SkipP2 && SkipP3) || (PlayerActType == 1 && SkipP3))
         {
             canSelect = false;
-            resultTurn = true; 
+            resultTurn = true;
             ShowResault();
         }
         else
@@ -202,7 +203,7 @@ public class PlayerTurnUI : MonoBehaviour
 
             DisappearACTUI();
             if (PlayerActType > 0) PlayerActType = (PlayerActType + 2) % 3;
-            if(SkipP2) PlayerActType--;
+            if (SkipP2) PlayerActType--;
             SkipP2 = false;
             SkipP3 = false;
             AppearACTUI();
@@ -387,13 +388,13 @@ public class PlayerTurnUI : MonoBehaviour
                     case 2:
                         Debug.Log("Turn : " + DetailTurn);
                         Debug.Log("Before : " + playerData.PlayerTypes[PlayerAct[2].HealTarget + 1].Hp);
-                        playerData.PlayerTypes[PlayerAct[2].HealTarget +1].Hp += PlayerAct[2].HealAmount;
+                        playerData.PlayerTypes[PlayerAct[2].HealTarget + 1].Hp += PlayerAct[2].HealAmount;
                         Debug.Log("After : " + playerData.PlayerTypes[PlayerAct[2].HealTarget + 1].Hp);
                         break;
                     case 3:
                         if (playerTargetUI.EnemyTarget[PlayerAct[2].ActDetail].Tired >= 100)
                         {
-                            
+
                         }
                         break;
                     case 5:
@@ -428,8 +429,23 @@ public class PlayerTurnUI : MonoBehaviour
         playerfightUI.ResetAttackData();
     }
 
-    public void AttackEnemy(int type)
+    public void AttackEnemy(int type,List<bool> dupeList)
     {
-        enemyType[PlayerAct[type].ActDetail].Hp -= playerData.PlayerTypes[type].ATK - enemyType[PlayerAct[type].ActDetail].Def;
+        int Damage = playerData.PlayerTypes[type].ATK - enemyType[PlayerAct[type].ActDetail].Def;
+        enemyType[PlayerAct[type].ActDetail].Hp -= Damage;
+        DamageText[type].FixTextValue(Damage);
+        int dupeType = 0;
+
+        if (dupeList[0] == true && 0 == type) dupeType = 0;
+        else if (dupeList[1] == true && 1 == type) dupeType = 1;
+        else if (dupeList[2] == true && 2 == type) dupeType = 2;
+
+        for(int dupe = 0; dupe < dupeList.Count; dupe++)
+        {
+            if (dupeList[dupe] == false) return;
+            Damage = playerData.PlayerTypes[dupeType].ATK - enemyType[PlayerAct[dupeType].ActDetail].Def;
+            enemyType[PlayerAct[dupeType].ActDetail].Hp -= Damage;
+            DamageText[dupeType].FixTextValue(Damage);
+        }
     }
 }

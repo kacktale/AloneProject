@@ -41,4 +41,9 @@ public class NoteScan : MonoBehaviour
         closeNote = false;
         correctNote = false;
     }
+
+    public void LinkNoteData()
+    {
+        noteManager.PlayerType = PlayerType;
+    }
 }

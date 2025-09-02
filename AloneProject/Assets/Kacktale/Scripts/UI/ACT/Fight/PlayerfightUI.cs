@@ -21,6 +21,8 @@ public class PlayerfightUI : MonoBehaviour
     private bool CheckNote;
     public PlayerTurnUI turnUI;
 
+    public List<bool> isDupe;
+
     private void Awake()
     {
         PlayerRectTransform = new RectTransform[PlayerAttackUI.Length];
@@ -81,16 +83,23 @@ public class PlayerfightUI : MonoBehaviour
     public void FixNoteList()
     {
         var distinctSorted = new List<int>();
+
         foreach (var note in Notes)
         {
             if (!distinctSorted.Contains(note.NoteList))
                 distinctSorted.Add(note.NoteList);
         }
+
         distinctSorted.Sort();
 
         foreach (var note in Notes)
         {
             note.NoteList = distinctSorted.IndexOf(note.NoteList);
+        }
+
+        for (int i = 0; i < noteScans.Length; i++)
+        {
+            noteScans[i].LinkNoteData();
         }
     }
 
@@ -109,7 +118,9 @@ public class PlayerfightUI : MonoBehaviour
         {
             if (Notes[i].NoteList == NoteTurn)
             {
-                Debug.Log("데미지 들어감");
+                if (Notes[i].PlayerType == 0) isDupe[0] = true;
+                else if(Notes[i].PlayerType == 1) isDupe[1] = true;
+                else isDupe[2] = true;
                 Destroy(Notes[i].gameObject);
                 Notes.RemoveAt(i);
                 FightEnemy(playerType);
@@ -122,7 +133,8 @@ public class PlayerfightUI : MonoBehaviour
 
     public void FightEnemy(int playerType)
     {
-        turnUI.AttackEnemy(playerType);
+        turnUI.AttackEnemy(playerType, isDupe);
+        for (int a = 0; a < 3; a++) isDupe[a] = false;
     }
 
     public void EndTurn()
