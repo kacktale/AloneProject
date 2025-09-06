@@ -62,7 +62,6 @@ public class PlayerfightUI : MonoBehaviour
             if (PlayerAttackUI[i].activeSelf)
             {
                 int DelayTime = Random.Range(0, 3);
-                Debug.Log(DelayTime);
                 GameObject note = Instantiate(HitNote, transform.position, Quaternion.identity, PlayerAttackUI[i].transform);
                 RectTransform rect = note.GetComponent<RectTransform>();
                 noteScans[i].noteObj = rect;

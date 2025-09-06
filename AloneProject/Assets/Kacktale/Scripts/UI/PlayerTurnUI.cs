@@ -35,6 +35,7 @@ public class PlayerTurnUI : MonoBehaviour
     public PlayerfightUI playerfightUI;
     public PlayerTargetUI playerTargetUI;
     public PlayerItemUI playerItemUI;
+    public TpManager playerTpManager;
 
     public bool SkipP2 = false;
     public bool SkipP3 = false;
@@ -43,6 +44,9 @@ public class PlayerTurnUI : MonoBehaviour
     #endregion
     [SerializeField] private int DetailTurn = 0;
     public DamageText[] DamageText;
+
+    public List<bool> PlayerAttacked;
+
     void Start()
     {
         AppearACTUI();
@@ -166,6 +170,7 @@ public class PlayerTurnUI : MonoBehaviour
                 playerTargetUI.CreateTarget(true);
                 return;
             }
+            playerTpManager.UpdateTp(20);
             GotoNextPlayer();
         }
     }
@@ -426,26 +431,42 @@ public class PlayerTurnUI : MonoBehaviour
             for (int i = 0; i < act.ACTImage.Length; i++) act.ACTImage[i].color = Color.white;
             act.ACTImage[act.ActNum].color = Color.yellow;
         }
+        for (int i = 0;i < PlayerAttacked.Count;i++) PlayerAttacked[i] = false;
         playerfightUI.ResetAttackData();
     }
 
-    public void AttackEnemy(int type,List<bool> dupeList)
+    public void AttackEnemy(int type, List<bool> dupeList)
     {
-        int Damage = playerData.PlayerTypes[type].ATK - enemyType[PlayerAct[type].ActDetail].Def;
-        enemyType[PlayerAct[type].ActDetail].Hp -= Damage;
-        DamageText[type].FixTextValue(Damage);
+        int Damage = playerData.PlayerTypes[type + 1].ATK - enemyType[PlayerAct[type].ActDetail].Def;
+        if (Damage <= 0) Damage = 1;
+
+        if (!PlayerAttacked[type])
+        {
+            PlayerAttacked[type] = true;
+            enemyType[PlayerAct[type].ActDetail].Hp -= Damage;
+            Debug.Log("플레이어" + type + "데미지 :" + Damage);
+            DamageText[type].FixTextValue(Damage);
+        }
         int dupeType = 0;
 
-        if (dupeList[0] == true && 0 == type) dupeType = 0;
-        else if (dupeList[1] == true && 1 == type) dupeType = 1;
-        else if (dupeList[2] == true && 2 == type) dupeType = 2;
-
-        for(int dupe = 0; dupe < dupeList.Count; dupe++)
+        for (int dupe = 0; dupe < dupeList.Count; dupe++)
         {
-            if (dupeList[dupe] == false) return;
-            Damage = playerData.PlayerTypes[dupeType].ATK - enemyType[PlayerAct[dupeType].ActDetail].Def;
-            enemyType[PlayerAct[dupeType].ActDetail].Hp -= Damage;
-            DamageText[dupeType].FixTextValue(Damage);
+            bool dupeCheck = dupeList[dupe] && dupe != type;
+            if (dupeCheck) dupeType = dupe;
+
+            if (!PlayerAttacked[dupeType])
+            {
+                PlayerAttacked[dupeType] = true;
+
+                if (dupeCheck)
+                {
+                    Damage = playerData.PlayerTypes[dupeType + 1].ATK - enemyType[PlayerAct[dupeType].ActDetail].Def;
+                    if (Damage <= 0) Damage = 1;
+                    enemyType[PlayerAct[dupeType].ActDetail].Hp -= Damage;
+                    Debug.Log(" 중복 플레이어" + dupeType + "데미지 :" + Damage);
+                    DamageText[dupeType].FixTextValue(Damage);
+                }
+            }
         }
     }
 }

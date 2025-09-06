@@ -26510,6 +26510,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 345762447}
+  - component: {fileID: 345762449}
   - component: {fileID: 345762448}
   m_Layer: 5
   m_Name: TP
@@ -26585,12 +26586,27 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 2
   m_MinValue: 0
-  m_MaxValue: 104
+  m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 4
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &345762449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 345762446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cae5c800488c4248960cbb54b1bc1e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tp: 0
+  TpSlider: {fileID: 345762448}
+  TpText: {fileID: 1280343194}
 --- !u!1 &347387541
 GameObject:
   m_ObjectHideFlags: 0
@@ -96076,7 +96092,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -6.88, y: -67.7}
+  m_AnchoredPosition: {x: -6.88, y: -74.91}
   m_SizeDelta: {x: 28.02, y: 50}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1280343194
@@ -96099,7 +96115,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0%
+  m_text: '0
+
+    %'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -96138,7 +96156,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 45.75
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -96162,7 +96180,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -6.5390644, y: 0, z: -5.6672173, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -102578,6 +102596,7 @@ MonoBehaviour:
   playerfightUI: {fileID: 812929035}
   playerTargetUI: {fileID: 981617465}
   playerItemUI: {fileID: 1769832522}
+  playerTpManager: {fileID: 345762449}
   SkipP2: 0
   SkipP3: 0
   DescriptionText: {fileID: 770604203}
@@ -102586,6 +102605,7 @@ MonoBehaviour:
   - {fileID: 814403564}
   - {fileID: 900597228}
   - {fileID: 416593215}
+  PlayerAttacked: 000000
 --- !u!1 &1372225157
 GameObject:
   m_ObjectHideFlags: 0

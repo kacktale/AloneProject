@@ -12,7 +12,7 @@ public class DamageText : MonoBehaviour
     private const string hitAnimTriggerName = "IsHit";
     public void FixTextValue(int DamageValue)
     {
-        damageShowText.text = DamageValue.ToString();
         animator.SetTrigger(hitAnimTriggerName);
+        damageShowText.text = DamageValue.ToString();
     }
 }

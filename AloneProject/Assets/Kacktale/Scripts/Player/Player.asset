@@ -22,7 +22,7 @@ MonoBehaviour:
     Hp: 90
     MaxHp: 90
     Def: 0
-    ATK: 15
+    ATK: 30
   - Name: Susie
     Hp: 110
     MaxHp: 110
