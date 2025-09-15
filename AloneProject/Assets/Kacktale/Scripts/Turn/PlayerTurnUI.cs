@@ -36,6 +36,7 @@ public class PlayerTurnUI : MonoBehaviour
     public PlayerTargetUI playerTargetUI;
     public PlayerItemUI playerItemUI;
     public TpManager playerTpManager;
+    public PlayerHpUI playerHpUI;
 
     public bool SkipP2 = false;
     public bool SkipP3 = false;
@@ -45,7 +46,8 @@ public class PlayerTurnUI : MonoBehaviour
     [SerializeField] private int DetailTurn = 0;
     public DamageText[] DamageText;
 
-    public List<bool> PlayerAttacked;
+    public List<bool> playerAttacked;
+    public List<bool> playerKnockOut;
 
     void Start()
     {
@@ -206,6 +208,8 @@ public class PlayerTurnUI : MonoBehaviour
                 playerItemUI.ShowItem();
             }
 
+            TpBack();
+
             DisappearACTUI();
             if (PlayerActType > 0) PlayerActType = (PlayerActType + 2) % 3;
             if (SkipP2) PlayerActType--;
@@ -214,6 +218,15 @@ public class PlayerTurnUI : MonoBehaviour
             AppearACTUI();
         }
     }
+
+    void TpBack()
+    {
+        if (PlayerActType >= 1 && PlayerAct[PlayerActType - 1].ActNum == 4)
+        {
+            playerTpManager.UpdateTp(-20);
+        }
+    }
+
 
     public void SetActSelect()
     {
@@ -431,8 +444,11 @@ public class PlayerTurnUI : MonoBehaviour
             for (int i = 0; i < act.ACTImage.Length; i++) act.ACTImage[i].color = Color.white;
             act.ACTImage[act.ActNum].color = Color.yellow;
         }
-        for (int i = 0;i < PlayerAttacked.Count;i++) PlayerAttacked[i] = false;
+        for (int i = 0; i < playerAttacked.Count; i++) playerAttacked[i] = false;
         playerfightUI.ResetAttackData();
+        SkipP2 = false;
+        SkipP3 = false;
+        DetailTurn = 0;
     }
 
     public void AttackEnemy(int type, List<bool> dupeList)
@@ -440,9 +456,9 @@ public class PlayerTurnUI : MonoBehaviour
         int Damage = playerData.PlayerTypes[type + 1].ATK - enemyType[PlayerAct[type].ActDetail].Def;
         if (Damage <= 0) Damage = 1;
 
-        if (!PlayerAttacked[type])
+        if (!playerAttacked[type])
         {
-            PlayerAttacked[type] = true;
+            playerAttacked[type] = true;
             enemyType[PlayerAct[type].ActDetail].Hp -= Damage;
             Debug.Log("플레이어" + type + "데미지 :" + Damage);
             DamageText[type].FixTextValue(Damage);
@@ -454,19 +470,43 @@ public class PlayerTurnUI : MonoBehaviour
             bool dupeCheck = dupeList[dupe] && dupe != type;
             if (dupeCheck) dupeType = dupe;
 
-            if (!PlayerAttacked[dupeType])
+            if (dupeCheck && !playerAttacked[dupeType])
             {
-                PlayerAttacked[dupeType] = true;
+                playerAttacked[dupeType] = true;
 
-                if (dupeCheck)
-                {
-                    Damage = playerData.PlayerTypes[dupeType + 1].ATK - enemyType[PlayerAct[dupeType].ActDetail].Def;
-                    if (Damage <= 0) Damage = 1;
-                    enemyType[PlayerAct[dupeType].ActDetail].Hp -= Damage;
-                    Debug.Log(" 중복 플레이어" + dupeType + "데미지 :" + Damage);
-                    DamageText[dupeType].FixTextValue(Damage);
-                }
+                Damage = playerData.PlayerTypes[dupeType + 1].ATK - enemyType[PlayerAct[dupeType].ActDetail].Def;
+                if (Damage <= 0) Damage = 1;
+                enemyType[PlayerAct[dupeType].ActDetail].Hp -= Damage;
+                Debug.Log(" 중복 플레이어" + dupeType + "데미지 :" + Damage);
+                DamageText[dupeType].FixTextValue(Damage);
             }
         }
+    }
+
+    public void RandomPlayerDamage()
+    {
+        if (playerData.PlayerTypes[1].Hp >= 0 || playerData.PlayerTypes[2].Hp >= 0 || playerData.PlayerTypes[3].Hp >= 0)
+        {
+            int type = Random.Range(1, 4);
+            type = CheckPlayerKnockOut(type);
+            int Damage = Random.Range(30, 34) - playerData.PlayerTypes[type].Def;
+
+            if (Damage <= 0) Damage = 1;
+
+            playerData.PlayerTypes[type].Hp -= Damage;
+            DamageText[type + 2].FixTextValue(Damage);
+            playerHpUI.UpdateUI();
+        }
+    }
+
+    int CheckPlayerKnockOut(int type)
+    {
+        type--;
+        while (playerKnockOut[type])
+        {
+            type = (type + 1) % 3;
+        }
+        type++;
+        return type;
     }
 }

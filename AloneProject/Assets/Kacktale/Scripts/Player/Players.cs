@@ -14,15 +14,7 @@ public class PlayerType
 
     public int ATK;
 }
-[System.Serializable]
-public class PlayerAct
-{
-    public int ActNum; 
-}
-
-[CreateAssetMenu(fileName = "Player", menuName = "ScriptableObject/PlayerType", order = 1)]
-public class Players : ScriptableObject
+public class Players : MonoBehaviour
 {
     public PlayerType[] PlayerTypes;
-    public PlayerAct[] PlayerActs;
 }

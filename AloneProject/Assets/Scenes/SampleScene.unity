@@ -60672,6 +60672,71 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &810430067
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 810430069}
+  - component: {fileID: 810430068}
+  m_Layer: 0
+  m_Name: PlayerData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &810430068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810430067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a90a3bdf1792a7a4b93edf349128efa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerTypes:
+  - Name: Unknown
+    Hp: 0
+    MaxHp: 0
+    Def: 0
+    ATK: 0
+  - Name: Kris
+    Hp: 90
+    MaxHp: 90
+    Def: 1
+    ATK: 40
+  - Name: Susie
+    Hp: 110
+    MaxHp: 110
+    Def: 1
+    ATK: 60
+  - Name: Ralsie
+    Hp: 70
+    MaxHp: 70
+    Def: 1
+    ATK: 20
+--- !u!4 &810430069
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810430067}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.16162652, y: 0.006217722, z: -17.195986}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &811984162
 GameObject:
   m_ObjectHideFlags: 0
@@ -73241,7 +73306,7 @@ MonoBehaviour:
   Pannel: {fileID: 981617463}
   EnemyTarget:
   - {fileID: 11400000, guid: b92c066acea2eb547b010fa911807237, type: 2}
-  PlayerTarget: {fileID: 11400000, guid: 4883854eb02076642bc429122c568fd0, type: 2}
+  PlayerTarget: {fileID: 810430068}
   ParantUI: {fileID: 981617464}
   TargetObj: {fileID: 1684298449349229069, guid: 27004e1fa721e0b4683ea08c38747c26, type: 3}
   PlayerActUI: {fileID: 729982508}
@@ -93502,6 +93567,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 2
+  playerTurnUI: {fileID: 1372007298}
+  isInvincible: 0
 --- !u!61 &1242312716
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -102524,7 +102591,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1468a720ff60b614b8e1d9ae1ca3f434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerData: {fileID: 11400000, guid: 4883854eb02076642bc429122c568fd0, type: 2}
+  PlayerData: {fileID: 810430068}
   PlayerName:
   - {fileID: 1833142395}
   - {fileID: 601837799}
@@ -102535,6 +102602,7 @@ MonoBehaviour:
   - {fileID: 577085506}
   Type: 010000000200000003000000
   ErrorManager: {fileID: 2034133633}
+  PlayerTurnUI: {fileID: 1372007298}
 --- !u!114 &1372007298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102547,7 +102615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49bf873b5d79d7c47b3c713e4d035102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerData: {fileID: 11400000, guid: 4883854eb02076642bc429122c568fd0, type: 2}
+  playerData: {fileID: 810430068}
   enemyType:
   - {fileID: 11400000, guid: b92c066acea2eb547b010fa911807237, type: 2}
   TrunManage: {fileID: 1390067995}
@@ -102597,6 +102665,7 @@ MonoBehaviour:
   playerTargetUI: {fileID: 981617465}
   playerItemUI: {fileID: 1769832522}
   playerTpManager: {fileID: 345762449}
+  playerHpUI: {fileID: 1372007297}
   SkipP2: 0
   SkipP3: 0
   DescriptionText: {fileID: 770604203}
@@ -102605,7 +102674,11 @@ MonoBehaviour:
   - {fileID: 814403564}
   - {fileID: 900597228}
   - {fileID: 416593215}
-  PlayerAttacked: 000000
+  - {fileID: 976019401}
+  - {fileID: 420481757}
+  - {fileID: 893819537}
+  playerAttacked: 000000
+  playerKnockOut: 000000
 --- !u!1 &1372225157
 GameObject:
   m_ObjectHideFlags: 0
@@ -117354,7 +117427,9 @@ MonoBehaviour:
   currentPhaze: 0
   turnManage: {fileID: 1390067995}
   Bullet: {fileID: 2794618652506567249, guid: a13dca92fa998864e9db16290d03ac21, type: 3}
+  Cannon: {fileID: 4346205481636927260, guid: 4b1438f93c250bc4baf6b26cb10f0534, type: 3}
   EnemyPos: {fileID: 1573795048}
+  PlayerPos: {fileID: 1242312714}
   EnemyTurn: 0
 --- !u!1 &1547146904
 GameObject:
@@ -159002,3 +159077,4 @@ SceneRoots:
   - {fileID: 411187632}
   - {fileID: 816547836}
   - {fileID: 372262145}
+  - {fileID: 810430069}

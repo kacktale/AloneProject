@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerfightUI : MonoBehaviour
@@ -38,9 +37,13 @@ public class PlayerfightUI : MonoBehaviour
     {
         NoteTurn = 0;
         MadeFightNote = false;
-        for(int i = 0; i < noteScans.Length; i++)
+        PlayerOneReady = false;
+        PlayerTwoReady = false;
+        PlayerThreeReady = false;
+        for (int i = 0; i < noteScans.Length; i++)
         {
             noteScans[i].ResetDetect();
+            PlayerAttackUI[i].SetActive(true);
         }
     }
 
@@ -95,11 +98,6 @@ public class PlayerfightUI : MonoBehaviour
         {
             note.NoteList = distinctSorted.IndexOf(note.NoteList);
         }
-
-        for (int i = 0; i < noteScans.Length; i++)
-        {
-            noteScans[i].LinkNoteData();
-        }
     }
 
     public void CheckNotes(NoteManager note)
@@ -117,9 +115,9 @@ public class PlayerfightUI : MonoBehaviour
         {
             if (Notes[i].NoteList == NoteTurn)
             {
-                if (Notes[i].PlayerType == 0) isDupe[0] = true;
-                else if(Notes[i].PlayerType == 1) isDupe[1] = true;
-                else isDupe[2] = true;
+                if (Notes[i].PlayerType == 0 && PlayerOneReady) isDupe[0] = true;
+                else if(Notes[i].PlayerType == 1 && PlayerTwoReady) isDupe[1] = true;
+                else if(Notes[i].PlayerType == 2 && PlayerThreeReady) isDupe[2] = true;
                 Destroy(Notes[i].gameObject);
                 Notes.RemoveAt(i);
                 FightEnemy(playerType);

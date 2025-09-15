@@ -11,6 +11,7 @@ public class PlayerHpUI : MonoBehaviour
     public Slider[] PlayerHp;
     public int[] Type;
     public ErrorManager ErrorManager;
+    public PlayerTurnUI PlayerTurnUI;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +26,7 @@ public class PlayerHpUI : MonoBehaviour
             PlayerName[i].text = PlayerData.PlayerTypes[Type[i]].Name;
             PlayerHp[i].maxValue = PlayerData.PlayerTypes[Type[i]].MaxHp;
             PlayerHp[i].value = PlayerData.PlayerTypes[Type[i]].Hp;
+            if (PlayerData.PlayerTypes[Type[i]].Hp <= 0) PlayerTurnUI.playerKnockOut[i] = true;
         }
     }
 }

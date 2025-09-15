@@ -14,7 +14,7 @@ public class TpManager : MonoBehaviour
     public void UpdateTp(int Value)
     {
         Tp += Value;
-        if(Tp > 100) Value = 100;
+        if(Tp >= 100) Tp = 100;
         TpSlider.value = Tp;
         TpText.text = $"{Tp}\n%";
     }

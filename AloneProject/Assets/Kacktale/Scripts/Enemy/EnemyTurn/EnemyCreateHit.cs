@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class EnemyCreateHit : MonoBehaviour
 {
@@ -9,7 +10,9 @@ public class EnemyCreateHit : MonoBehaviour
     public TrunManage turnManage;
 
     public GameObject Bullet;
+    public GameObject Cannon;
     public Transform EnemyPos;
+    public Transform PlayerPos;
 
     public bool EnemyTurn;
 
@@ -27,6 +30,7 @@ public class EnemyCreateHit : MonoBehaviour
         {
             case 0: StartCoroutine(StartFirstTurn()); break;
             case 1: StartCoroutine(StartSecondTurn()); break;
+            case 2: StartCoroutine(StartThrdTurn()); break;
         }
     }
 
@@ -87,6 +91,27 @@ public class EnemyCreateHit : MonoBehaviour
             }
             bullets.Clear();
         }
+        yield return new WaitForSeconds(1f);
+        EndTurn();
+    }
+
+    IEnumerator StartThrdTurn()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            float leftX = Random.Range(3f,6f);
+            float rightX = Random.Range(-3f, -6f);
+            bool isleft = Random.value < 0.5f;
+            Vector3 Pos = new Vector3(0,6,0);
+            if(isleft) Pos.x = leftX;
+            else Pos.x = rightX;
+
+            EnemyCannon cannon = Instantiate(Cannon,Pos, Quaternion.identity).GetComponent<EnemyCannon>();
+            cannon.IsLeft = isleft;
+            cannon.PlayerPos = PlayerPos;
+            yield return new WaitForSeconds(0.6f);
+        }
+        yield return new WaitForSeconds(2.6f);
         EndTurn();
     }
 

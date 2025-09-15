@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Note
   - DestroyZone
+  - Bullet
   layers:
   - Default
   - TransparentFX

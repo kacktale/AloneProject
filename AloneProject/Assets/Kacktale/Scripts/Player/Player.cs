@@ -6,6 +6,8 @@ public class Player : MonoBehaviour
 {
     public float Speed;
     private Rigidbody2D rb;
+    public PlayerTurnUI playerTurnUI;
+    public bool isInvincible = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,5 +33,29 @@ public class Player : MonoBehaviour
         float v = Input.GetAxisRaw("Vertical");
         //transform.position += new Vector3(h, v, 0) * Time.deltaTime * Speed;
         rb.velocity = new Vector2(h, v) * Speed;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            if (!isInvincible)
+            {
+                playerTurnUI.RandomPlayerDamage();
+                TurnOnInvincible();
+            }
+            Destroy(collision.gameObject);
+        }
+    }
+
+    private void TurnOnInvincible()
+    {
+        isInvincible = true;
+        Invoke("TurnOffInvincible",0.5f);
+    }
+
+    private void TurnOffInvincible()
+    {
+        isInvincible = false;
     }
 }
