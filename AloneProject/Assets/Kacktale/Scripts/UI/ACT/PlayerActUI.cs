@@ -42,6 +42,7 @@ public class PlayerActUI : ActControll
     [Header("필요한 컴포넌트들")]
     public PlayerTurnUI PlayerTurnUI;
     public PlayerTargetUI PlayerTargetUI;
+    public TpManager TpManager;
 
 
     public void CreateActUI()
@@ -67,11 +68,12 @@ public class PlayerActUI : ActControll
 
             TextMeshProUGUI actTxt = act.GetComponent<TextMeshProUGUI>();
             ActTextlist.Add(actTxt);
+            if (PlayerActName[PlayerNum].ActClass[i].NeedTp > TpManager.Tp) ActTextlist[ActNum].color = Color.gray;
+            else ActTextlist[ActNum].color = Color.yellow;
 
         }
         SkillDescription.text = PlayerActName[PlayerNum].ActClass[ActNum].Description;
         NeedTpName.text = $"{PlayerActName[PlayerNum].ActClass[ActNum].NeedTp}% TP";
-        ActTextlist[ActNum].color = Color.yellow;
     }
 
     public override void ChangeAct(int value, List<TextMeshProUGUI> textList)
@@ -104,6 +106,8 @@ public class PlayerActUI : ActControll
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
+            if (TpManager.Tp < PlayerActName[PlayerNum].ActClass[ActNum].NeedTp) return;
+            TpManager.Tp -= PlayerActName[PlayerNum].ActClass[ActNum].NeedTp;
             ExitChooseAct();
             PlayerTurnUI.PlayerAct[PlayerNum].ActDetail = ActNum;
             PlayerTargetUI.BeforeACTNum = 1;
@@ -114,6 +118,7 @@ public class PlayerActUI : ActControll
     }
     public void ExitChooseAct()
     {
+        ActNum = 0;
         IsMyturn = false;
 
         for (int i = 0; i < ActTextlist.Count; i++)

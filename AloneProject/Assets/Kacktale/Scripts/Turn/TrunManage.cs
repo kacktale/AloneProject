@@ -9,6 +9,7 @@ public class TrunManage : MonoBehaviour
     public GameObject Player;
     public PlayerTurnUI PlayerTurn;
     public EnemyCreateHit Enemysc;
+    public GameObject FadeZone;
     // Update is called once per frame
     void Update()
     {
@@ -18,11 +19,13 @@ public class TrunManage : MonoBehaviour
 
     public void StartEnemyTurn()
     {
+        FadeZone.SetActive(true);
         IsPlayerTurn = false;
         Enemysc.Maketurn();
     }
     public void StartPlayerTurn()
     {
+        FadeZone.SetActive(false);
         IsPlayerTurn = true;
         PlayerTurn.StartAct();
     }

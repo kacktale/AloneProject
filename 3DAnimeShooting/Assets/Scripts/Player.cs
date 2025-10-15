@@ -9,12 +9,15 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rigid.AddForce(0, 80, 0, ForceMode.Impulse);
+        }
     }
 }
