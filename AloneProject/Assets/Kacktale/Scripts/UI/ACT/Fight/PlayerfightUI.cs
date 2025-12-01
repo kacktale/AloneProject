@@ -76,6 +76,7 @@ public class PlayerfightUI : MonoBehaviour
                 notecomp.NoteList = DelayTime;
                 notecomp.TargetTransform = PlayerRectTransform[i];
                 notecomp.PlayerfightUI = this;
+                notecomp.PlayerType = i;
                 Notes.Add(notecomp);
             }
         }
@@ -109,20 +110,35 @@ public class PlayerfightUI : MonoBehaviour
 
     public void RemoveDupeNote(int playerType)
     {
-        if(CheckNote) return;
+        isDupe[playerType] = true;
+        GameObject removeNote = Notes[0].gameObject;
+        int type = 0;
+        for(int i = Notes.Count -1; i>=0; i--)
+        {
+            if (Notes[i].PlayerType == playerType)
+            {
+                removeNote = Notes[i].gameObject;
+                type = i;
+            }
+        }
+        Notes.RemoveAt(type);
+        Destroy(removeNote);
+        //if(CheckNote) return;
         CheckNote = true;
-        for (int i = Notes.Count - 1; i >= 0; i--)
+        for (int i = Notes.Count -1; i >= 0 ; i--)
         {
             if (Notes[i].NoteList == NoteTurn)
             {
-                if (Notes[i].PlayerType == 0 && PlayerOneReady) isDupe[0] = true;
-                else if(Notes[i].PlayerType == 1 && PlayerTwoReady) isDupe[1] = true;
-                else if(Notes[i].PlayerType == 2 && PlayerThreeReady) isDupe[2] = true;
-                Destroy(Notes[i].gameObject);
+                Debug.LogWarning(Notes[i].PlayerType);
+                if(Notes[i].PlayerType == 0 && PlayerOneReady) isDupe[0] = true;
+                if(Notes[i].PlayerType == 1 && PlayerTwoReady) isDupe[1] = true;
+                if(Notes[i].PlayerType == 2 && PlayerThreeReady) isDupe[2] = true;
+                removeNote = Notes[i].gameObject;
                 Notes.RemoveAt(i);
-                FightEnemy(playerType);
+                Destroy(removeNote);
             }
         }
+        FightEnemy(playerType);
         NoteTurn++;
         CheckNote = false;
         if (Notes.Count <= 0) Invoke("EndTurn", 1);
@@ -130,13 +146,14 @@ public class PlayerfightUI : MonoBehaviour
 
     public void FightEnemy(int playerType)
     {
-        turnUI.AttackEnemy(playerType, isDupe);
-        for (int a = 0; a < 3; a++) isDupe[a] = false;
+        List<bool> dupeData = isDupe;
+        turnUI.AttackEnemy(playerType, dupeData);
     }
 
     public void EndTurn()
     {
         trunManage.StartEnemyTurn();
         gameObject.SetActive(false);
+        isDupe = new List<bool> { false,false,false };
     }
 }
