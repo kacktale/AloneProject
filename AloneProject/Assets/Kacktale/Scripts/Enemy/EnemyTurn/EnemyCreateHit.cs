@@ -21,20 +21,26 @@ public class EnemyCreateHit : MonoBehaviour
     public void Maketurn()
     {
         EnemyTurn = true;
-        CheckPhaze();
+        CheckPhaze(currentPhaze);
         currentPhaze++;
     }
 
-    void CheckPhaze()
+    void CheckPhaze(int turn)
     {
-        switch (currentPhaze)
+        switch (turn)
         {
             case 0: StartCoroutine(StartFirstTurn()); break;
             case 1: StartCoroutine(StartSecondTurn()); break;
             case 2: StartCoroutine(StartThrdTurn()); break;
             case 3: StartCoroutine(StartForthTurn()); break;
-            default: StartCoroutine(StartFirstTurn()); break;
+            default: StartRandomPhaze(); break;
         }
+    }
+
+    void StartRandomPhaze()
+    {
+        int randomTurn = Random.Range(0,4);
+        CheckPhaze(randomTurn);
     }
 
     IEnumerator StartFirstTurn()
@@ -130,7 +136,7 @@ public class EnemyCreateHit : MonoBehaviour
             yield return null;
         }
         Destroy(chainSaw);
-        yield return new WaitForSeconds(2.6f);
+        yield return new WaitForSeconds(1.2f);
         EndTurn();
     }
 

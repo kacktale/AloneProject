@@ -27,6 +27,7 @@ public class PlayerHpUI : MonoBehaviour
             PlayerHp[i].maxValue = PlayerData.PlayerTypes[Type[i]].MaxHp;
             PlayerHp[i].value = PlayerData.PlayerTypes[Type[i]].Hp;
             if (PlayerData.PlayerTypes[Type[i]].Hp <= 0) PlayerTurnUI.playerKnockOut[i] = true;
+            else PlayerTurnUI.playerKnockOut[i] = false;
         }
     }
 }

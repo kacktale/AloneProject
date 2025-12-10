@@ -116,6 +116,7 @@ public class PlayerTargetUI : ActControll
                     PlayerTurnUI.PlayerAct[2].ActNum = 5;
                 }
             }
+            else if (BeforeACTNum == 1 && PlayerType == 2 && PlayerTurnUI.PlayerAct[PlayerType].ActDetail == 0) PlayerTurnUI.PlayerAct[2].HealAmount = 10;
 
             CloseTargetUI();
             PlayerTurnUI.GotoNextPlayer();
@@ -150,6 +151,7 @@ public class PlayerTargetUI : ActControll
     public void CloseTargetUI()
     {
         for (int i = 0; i < TargetList.Count; i++) Destroy(TargetList[i].gameObject);
+        ActNum = 0;
         IsMyturn = false;
         TargetList.Clear();
         TargetText.Clear();

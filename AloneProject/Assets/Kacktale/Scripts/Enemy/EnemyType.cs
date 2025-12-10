@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Enemy",menuName ="Enemy/BossType",order =1)]
-public class EnemyType : ScriptableObject
+public class EnemyType : MonoBehaviour
 {
     public string Name;
 

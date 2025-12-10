@@ -73390,7 +73390,7 @@ MonoBehaviour:
   IsMyturn: 0
   Pannel: {fileID: 981617463}
   EnemyTarget:
-  - {fileID: 11400000, guid: b92c066acea2eb547b010fa911807237, type: 2}
+  - {fileID: 1573795049}
   PlayerTarget: {fileID: 810430068}
   ParantUI: {fileID: 981617464}
   TargetObj: {fileID: 1684298449349229069, guid: 27004e1fa721e0b4683ea08c38747c26, type: 3}
@@ -102702,7 +102702,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerData: {fileID: 810430068}
   enemyType:
-  - {fileID: 11400000, guid: b92c066acea2eb547b010fa911807237, type: 2}
+  - {fileID: 1573795049}
   TrunManage: {fileID: 1390067995}
   PlayerUI:
   - {fileID: 1177918002}
@@ -120374,6 +120374,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1573795048}
   - component: {fileID: 1573795047}
+  - component: {fileID: 1573795049}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -120448,6 +120449,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1573795049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573795046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d4017b304e3d0e48939d904b6f37b61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Jevil
+  Hp: 1800
+  MaxHp: 1800
+  Def: 10
+  ATK: 30
+  Tired: 0
 --- !u!1 &1574312797
 GameObject:
   m_ObjectHideFlags: 0
@@ -133532,7 +133551,6 @@ MonoBehaviour:
   PlayerTurn: 1
   FirstItemAct: 1
   PlayerNum: 0
-  PlayerType: 0
   itemPrefab: {fileID: 2490336426879477270, guid: d5b63eaffd1192a4c8fd394603583df9, type: 3}
   textArea: {fileID: 1905540805}
   itemDescription: {fileID: 1514053438}

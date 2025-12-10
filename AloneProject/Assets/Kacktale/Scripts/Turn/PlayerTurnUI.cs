@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -195,7 +196,7 @@ public class PlayerTurnUI : MonoBehaviour
             canSelect = true;
             PlayerActType = (PlayerActType + 4) % 3;
             if (SkipP2) PlayerActType++;
-            if(playerKnockOut[1]) PlayerActType++;
+            if (playerKnockOut[1]) PlayerActType++;
             AppearACTUI();
         }
     }
@@ -353,7 +354,7 @@ public class PlayerTurnUI : MonoBehaviour
                         break;
                     case 2:
                         playerData.PlayerTypes[PlayerAct[0].HealTarget + 1].Hp += PlayerAct[0].HealAmount;
-                        DamageText[3].TextHeal(PlayerAct[0].HealAmount);
+                        DamageText[PlayerAct[0].HealTarget + 3].TextHeal(PlayerAct[0].HealAmount);
                         PlayerHpUI.UpdateUI();
                         break;
                     case 3:
@@ -376,13 +377,16 @@ public class PlayerTurnUI : MonoBehaviour
                         switch (PlayerAct[1].ActDetail)
                         {
                             case 0:
-                                DescriptionText.text = SkillText.rudeBuster + $"{PlayerActUI.PlayerActName[1].ActClass[0].Name}!";
+                                int Damage = playerData.PlayerTypes[2].ATK * 2 - enemyType[PlayerAct[1].ActDetail].Def;
+                                if (Damage <= 0) Damage = 1;
+                                enemyType[PlayerAct[1].ActDetail].Hp -= Damage;
+                                DamageText[1].FixTextValue(Damage);
                                 break;
                         }
                         break;
                     case 2:
                         playerData.PlayerTypes[PlayerAct[1].HealTarget + 1].Hp += PlayerAct[1].HealAmount;
-                        DamageText[4].TextHeal(PlayerAct[1].HealAmount);
+                        DamageText[PlayerAct[1].HealTarget + 3].TextHeal(PlayerAct[1].HealAmount);
                         PlayerHpUI.UpdateUI();
                         break;
                     case 3:
@@ -406,6 +410,9 @@ public class PlayerTurnUI : MonoBehaviour
                         {
                             case 0:
                                 DescriptionText.text = SkillText.Heal + $"{PlayerActUI.PlayerActName[2].ActClass[0].Name}!";
+                                playerData.PlayerTypes[PlayerAct[2].HealTarget + 1].Hp += PlayerAct[2].HealAmount;
+                                DamageText[PlayerAct[2].HealTarget + 3].TextHeal(PlayerAct[2].HealAmount);
+                                PlayerHpUI.UpdateUI();
                                 break;
                             case 1:
                                 DescriptionText.text = SkillText.Sleep + $"{PlayerActUI.PlayerActName[2].ActClass[1].Name}!";
@@ -413,12 +420,9 @@ public class PlayerTurnUI : MonoBehaviour
                         }
                         break;
                     case 2:
-                        Debug.Log("Turn : " + DetailTurn);
-                        Debug.Log("Before : " + playerData.PlayerTypes[PlayerAct[2].HealTarget + 1].Hp);
                         playerData.PlayerTypes[PlayerAct[2].HealTarget + 1].Hp += PlayerAct[2].HealAmount;
-                        DamageText[5].TextHeal(PlayerAct[2].HealAmount);
+                        DamageText[PlayerAct[2].HealTarget + 3].TextHeal(PlayerAct[2].HealAmount);
                         PlayerHpUI.UpdateUI();
-                        Debug.Log("After : " + playerData.PlayerTypes[PlayerAct[2].HealTarget + 1].Hp);
                         break;
                     case 3:
                         if (playerTargetUI.EnemyTarget[PlayerAct[2].ActDetail].Tired >= 100)
@@ -460,6 +464,7 @@ public class PlayerTurnUI : MonoBehaviour
         }
         for (int i = 0; i < playerAttacked.Count; i++) playerAttacked[i] = false;
         playerfightUI.ResetAttackData();
+        playerItemUI.PlayerTurn = 1;
         SkipP2 = false;
         SkipP3 = false;
         DetailTurn = 0;
@@ -495,24 +500,22 @@ public class PlayerTurnUI : MonoBehaviour
                 DamageText[dupeType].FixTextValue(Damage);
             }
         }
+        if (enemyType[PlayerAct[type].ActDetail].Hp <= 0) SceneManager.LoadScene(3);
     }
 
     public void RandomPlayerDamage()
     {
-        if (playerData.PlayerTypes[1].Hp >= 0 || playerData.PlayerTypes[2].Hp >= 0 || playerData.PlayerTypes[3].Hp >= 0)
-        {
-            int type = Random.Range(1, 4);
-            type = CheckPlayerKnockOut(type);
-            int Damage = Random.Range(30, 34) - playerData.PlayerTypes[type].Def;
+        int type = Random.Range(1, 4);
+        type = CheckPlayerKnockOut(type);
+        int Damage = Random.Range(30, 34) - playerData.PlayerTypes[type].Def;
 
-            if (Damage <= 0) Damage = 1;
+        if (Damage <= 0) Damage = 1;
 
-            playerData.PlayerTypes[type].Hp -= Damage;
-            if(playerData.PlayerTypes[type].Hp < 0) DamageText[type + 2].TextDown();
-            else DamageText[type + 2].FixTextValue(Damage,false);
-            playerHpUI.UpdateUI();
-        }
-        else Debug.LogErrorFormat("게임 끝");
+        playerData.PlayerTypes[type].Hp -= Damage;
+        if (playerData.PlayerTypes[type].Hp < 0) DamageText[type + 2].TextDown();
+        else DamageText[type + 2].FixTextValue(Damage, false);
+        if (playerData.PlayerTypes[1].Hp <= 0 && playerData.PlayerTypes[2].Hp <= 0 && playerData.PlayerTypes[3].Hp <= 0) SceneManager.LoadScene(2);
+        playerHpUI.UpdateUI();
     }
 
     int CheckPlayerKnockOut(int type)
