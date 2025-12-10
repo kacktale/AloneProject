@@ -37,14 +37,14 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Bullet"))
+        if (collision.gameObject.CompareTag("Bullet") || collision.gameObject.CompareTag("DontDestroyBullet"))
         {
             if (!isInvincible)
             {
                 playerTurnUI.RandomPlayerDamage();
                 TurnOnInvincible();
             }
-            Destroy(collision.gameObject);
+            if(collision.gameObject.CompareTag("Bullet")) Destroy(collision.gameObject);
         }
     }
 

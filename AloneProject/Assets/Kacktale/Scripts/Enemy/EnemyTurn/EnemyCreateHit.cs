@@ -11,6 +11,7 @@ public class EnemyCreateHit : MonoBehaviour
 
     public GameObject Bullet;
     public GameObject Cannon;
+    public GameObject Track;
     public Transform EnemyPos;
     public Transform PlayerPos;
 
@@ -31,6 +32,8 @@ public class EnemyCreateHit : MonoBehaviour
             case 0: StartCoroutine(StartFirstTurn()); break;
             case 1: StartCoroutine(StartSecondTurn()); break;
             case 2: StartCoroutine(StartThrdTurn()); break;
+            case 3: StartCoroutine(StartForthTurn()); break;
+            default: StartCoroutine(StartFirstTurn()); break;
         }
     }
 
@@ -108,9 +111,25 @@ public class EnemyCreateHit : MonoBehaviour
 
             EnemyCannon cannon = Instantiate(Cannon,Pos, Quaternion.identity).GetComponent<EnemyCannon>();
             cannon.IsLeft = isleft;
-            cannon.PlayerPos = PlayerPos;
+            cannon.PlayerPos = PlayerPos;      
             yield return new WaitForSeconds(0.6f);
         }
+        yield return new WaitForSeconds(2.6f);
+        EndTurn();
+    }
+
+    IEnumerator StartForthTurn()
+    {
+        GameObject chainSaw = Instantiate(Track,Vector3.up,Quaternion.identity);
+        yield return new WaitForSeconds(1f);
+        float t = 0;
+        while (t < 15f)
+        {
+            chainSaw.transform.Rotate(Vector3.forward * 0.5f);
+            t += Time.deltaTime;
+            yield return null;
+        }
+        Destroy(chainSaw);
         yield return new WaitForSeconds(2.6f);
         EndTurn();
     }

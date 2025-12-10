@@ -29,7 +29,6 @@ public class PlayerItemUI : ActControll
 
     public bool FirstItemAct = true;
     public int PlayerNum;
-    public int PlayerType;
 
     public GameObject itemPrefab;
     public Transform textArea;
@@ -97,7 +96,7 @@ public class PlayerItemUI : ActControll
 
             HideItem();
 
-            playerTargetUI.PlayerType = PlayerType;
+            playerTargetUI.PlayerType = PlayerNum;
             playerTargetUI.BeforeACTNum = 2;
             playerTargetUI.IsMyturn = true;
             playerTargetUI.CreateTarget(false);
