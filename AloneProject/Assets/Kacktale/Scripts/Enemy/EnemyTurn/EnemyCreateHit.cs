@@ -33,6 +33,7 @@ public class EnemyCreateHit : MonoBehaviour
             case 1: StartCoroutine(StartSecondTurn()); break;
             case 2: StartCoroutine(StartThrdTurn()); break;
             case 3: StartCoroutine(StartForthTurn()); break;
+            case 4: StartCoroutine(StartFifthTurn()); break;
             default: StartRandomPhaze(); break;
         }
     }
@@ -137,6 +138,23 @@ public class EnemyCreateHit : MonoBehaviour
         }
         Destroy(chainSaw);
         yield return new WaitForSeconds(1.2f);
+        EndTurn();
+    }
+
+    IEnumerator StartFifthTurn()
+    {
+        yield return new WaitForSeconds(0.6f);
+        for (int i = 0; i < 40; i++)
+        {
+            float X = Random.Range(2f, -2f);
+            float Y = Random.Range(5f, 4.5f);
+            Vector3 Pos = new Vector3(X, Y, 0);
+            Bullet bullet = Instantiate(Bullet, Pos,Quaternion.Euler(0,0,180)).GetComponent<Bullet>();
+            bullet.speed = 8;
+            float waitTime = Random.Range(0.1f,0.3f);
+            yield return new WaitForSeconds(waitTime);
+        }
+        yield return new WaitForSeconds(1.6f);
         EndTurn();
     }
 
