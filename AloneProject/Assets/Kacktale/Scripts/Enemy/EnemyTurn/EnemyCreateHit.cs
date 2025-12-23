@@ -146,13 +146,13 @@ public class EnemyCreateHit : MonoBehaviour
         yield return new WaitForSeconds(0.6f);
         for (int i = 0; i < 40; i++)
         {
-            float X = Random.Range(2f, -2f);
+            float X = Random.Range(1.5f, -1.5f);
             float Y = Random.Range(5f, 4.5f);
-            Vector3 Pos = new Vector3(X, Y, 0);
+            Vector3 Pos = new Vector3(PlayerPos.position.x + X, Y, 0);
             Bullet bullet = Instantiate(Bullet, Pos,Quaternion.Euler(0,0,180)).GetComponent<Bullet>();
-            bullet.speed = 8;
             float waitTime = Random.Range(0.1f,0.3f);
             yield return new WaitForSeconds(waitTime);
+            bullet.speed = 6;
         }
         yield return new WaitForSeconds(1.6f);
         EndTurn();
