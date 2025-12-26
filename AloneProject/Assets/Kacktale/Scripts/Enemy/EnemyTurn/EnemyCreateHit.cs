@@ -12,6 +12,7 @@ public class EnemyCreateHit : MonoBehaviour
     public GameObject Bullet;
     public GameObject Cannon;
     public GameObject Track;
+    public GameObject marryGoRound;
     public Transform EnemyPos;
     public Transform PlayerPos;
 
@@ -34,6 +35,7 @@ public class EnemyCreateHit : MonoBehaviour
             case 2: StartCoroutine(StartThrdTurn()); break;
             case 3: StartCoroutine(StartForthTurn()); break;
             case 4: StartCoroutine(StartFifthTurn()); break;
+            case 5: StartCoroutine(StartSixthTurn()); break;
             default: StartRandomPhaze(); break;
         }
     }
@@ -155,6 +157,19 @@ public class EnemyCreateHit : MonoBehaviour
             bullet.speed = 6;
         }
         yield return new WaitForSeconds(1.6f);
+        EndTurn();
+    }
+
+    IEnumerator StartSixthTurn()
+    {
+        for(int i = 1; i <= 4; i++)
+        {
+            Instantiate(marryGoRound, transform.position, Quaternion.identity);
+        }
+        for(int i = 1; i<= 3; i++)
+        {
+            Instantiate(marryGoRound, transform.position, Quaternion.identity);
+        }
         EndTurn();
     }
 
