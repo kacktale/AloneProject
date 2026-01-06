@@ -19,6 +19,10 @@ public class EnemyCreateHit : MonoBehaviour
     public bool EnemyTurn;
 
     private List<Bullet> bullets = new List<Bullet>();
+
+    public Vector3[] merrySpawnPos;
+    public List<MerryGoRound> frontMerry = new List<MerryGoRound>();
+    public List <MerryGoRound> backMerry = new List<MerryGoRound>();
     public void Maketurn()
     {
         EnemyTurn = true;
@@ -162,14 +166,41 @@ public class EnemyCreateHit : MonoBehaviour
 
     IEnumerator StartSixthTurn()
     {
-        for(int i = 1; i <= 4; i++)
+        for (int i = 0; i < 7; i++)
         {
-            Instantiate(marryGoRound, transform.position, Quaternion.identity);
+            GameObject merryObj = Instantiate(marryGoRound, transform.position, Quaternion.identity);
+            merryObj.transform.position = merrySpawnPos[i];
+            MerryGoRound merrysc = merryObj.GetComponent<MerryGoRound>();
+            if (i < 4)
+            {
+                frontMerry.Add(merrysc);
+                merrysc.IsBackSide = false;
+            }
+            else
+            {
+                backMerry.Add(merrysc);
+                merrysc.IsBackSide = true;
+            }
         }
-        for(int i = 1; i<= 3; i++)
+        for(int i = 0; i<4; i++)
         {
-            Instantiate(marryGoRound, transform.position, Quaternion.identity);
+            yield return new WaitForSeconds(2);
+            for (int j = 0; j < 7; j++)
+            {
+                if (j < 4) frontMerry[j].GoingUp = !frontMerry[j].GoingUp;
+                else backMerry[j -4].GoingUp = !backMerry[j -4].GoingUp;
+            }
         }
+        foreach(MerryGoRound var in frontMerry)
+        {
+            Destroy(var.gameObject);
+        }
+        foreach (MerryGoRound var in backMerry)
+        {
+            Destroy(var.gameObject);
+        }
+        backMerry = new List<MerryGoRound>();
+        frontMerry = new List<MerryGoRound>();
         EndTurn();
     }
 
